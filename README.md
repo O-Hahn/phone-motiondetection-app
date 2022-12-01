@@ -25,7 +25,6 @@ README.md
 .next
 .git
 
-
 ## Using Docker
 
 1. [Install Docker](https://docs.docker.com/get-docker/) on your machine.
@@ -65,16 +64,29 @@ Run image:
 `docker rm phone-md-app`
 `docker run -p 3000:3000 --name phone-md-app phone-md-app`
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
 ## Deploy build into registry
+If your image is ready - you could store it into the public registry - by tagging and pushing the image
 `docker tag sensor-app:latest de.icr.io/fh-bgld/sensor-app:latest` 
 `docker push de.icr.io/fh-bgld/sensor-app:latest`
 
-##
+## OpenShift deployment
 
+### Deploy the App from the Image
+By using the OpenShift GUI you can either build the image out of the git repository or by using the build image which is pushed to the public registry. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Manuel OpenShift deployment
+`oc new-project phone-md-app`
+`oc apply -f openshift/image-stream.yaml`
+`oc apply -f openshift/build-config.yaml`
+`oc apply -f openshift/deployment-config.yaml`
+`oc apply -f openshift/service.yaml`
+`oc apply -f openshift/route.yaml`
+`oc start-build phone-md-app`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Additional Info
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
