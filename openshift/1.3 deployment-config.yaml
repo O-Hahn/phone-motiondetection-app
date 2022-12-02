@@ -1,0 +1,63 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/route-disabled: 'false'
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: phone-md-app
+  namespace: phone-md-app
+  labels:
+    app: phone-md-app
+    app.kubernetes.io/component: phone-md-app
+    app.kubernetes.io/instance: phone-md-app
+    app.kubernetes.io/name: phone-md-app
+    app.kubernetes.io/part-of: phone-md-app
+    app.openshift.io/runtime: 3scale
+    app.openshift.io/runtime-namespace: phone-md-app
+    app.openshift.io/runtime-version: phone-md-app
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - phone-md-app
+        from:
+          kind: ImageStreamTag
+          namespace: phone-md-app
+          name: 'phone-md-app:latest'
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: phone-md-app
+    deploymentconfig: phone-md-app
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: phone-md-app
+        deploymentconfig: phone-md-app
+    spec:
+      containers:
+        - name: phone-md-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
