@@ -79,11 +79,11 @@ By using the OpenShift GUI you can either build the image out of the git reposit
 
 ### Manuel OpenShift deployment
 `oc new-project phone-md-app`
-`oc apply -f openshift/1.1image-stream.yaml`
-`oc apply -f openshift/build-config.yaml`
-`oc apply -f openshift/deployment-config.yaml`
-`oc apply -f openshift/service.yaml`
-`oc apply -f openshift/route.yaml`
+`oc apply -f openshift/1.1-image-stream.yaml`
+`oc apply -f openshift/1.2-build-config.yaml`
+`oc apply -f openshift/1.3-deployment-config.yaml`
+`oc apply -f openshift/1.4-service.yaml`
+`oc apply -f openshift/1.5-route.yaml`
 `oc start-build phone-md-app`
 
 ## Additional Info
