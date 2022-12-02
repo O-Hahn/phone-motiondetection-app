@@ -42,6 +42,9 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
 COPY --from=builder --chown=1001:1001 /app/public ./public
+COPY --from=builder --chown=1001:1001 /app/public/static ./public/static
+COPY --from=builder --chown=1001:1001 /app/node_modules ./node_modules
+COPY --from=builder --chown=1001:1001 /app/package.json ./package.json
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
