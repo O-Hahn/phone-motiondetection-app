@@ -18,7 +18,7 @@ const Train = () => {
         let now = new Date();
         if(recording) {
             var data = {
-                device: "phone_1",
+                device: appState.deviceName,
                 figure: key,
                 motionset: motionset,
                 date: now.toISOString(),
@@ -50,7 +50,7 @@ const Train = () => {
         let now = new Date();
         if(recording) {
             var data = {
-                device: "phone_1",
+                device: appState.deviceName,
                 figure: key,
                 motionset: motionset,
                 date: now.toISOString(),
@@ -119,9 +119,12 @@ const Train = () => {
         }
         else if (appState.destination == "2") {
             let req = {
-                url: appState.iotUrl,
-                dataObj: dataObj,
-                token: appState.iotToken,
+                iotServer: appState.iotServer,
+                iotUser: appState.iotUser,
+                iotPassword: appState.iotPassword,
+                iotTopic: appState.iotTopic,
+                deviceName: appState.deviceName,
+                dataObj: dataObj
             }
             let response = await fetch('/api/TrainIOT', {
                 method: 'POST',
@@ -175,7 +178,7 @@ const Train = () => {
             }
         };
         // eslint-disable-next-line
-    }, [recording, dataObj,sendOrientation]);
+    }, [recording, dataObj, sendOrientation]);
 
     const onFigureChange = (value) => {
         console.log('OnFigureChange:' + value)
@@ -195,8 +198,8 @@ const Train = () => {
             {
                 (appState.destination=="2" &&<>
                 <div className="flex">
-                    <div className="w-2/6 text-right pr-5 text-gray-600">IoT URL:</div>
-                    <div className="w-4/6 text-sm overflow-x-auto">{appState.iotUrl}</div>
+                    <div className="w-2/6 text-right pr-5 text-gray-600">IoT Server:</div>
+                    <div className="w-4/6 text-sm overflow-x-auto">{appState.iotServer}</div>
                 </div></>
                 )
                 

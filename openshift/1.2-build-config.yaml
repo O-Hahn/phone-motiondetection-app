@@ -9,7 +9,6 @@ spec:
     type: Git
     git:
       uri: https://github.com/O-Hahn/phone-motiondetection-app
-    contextDir: 
   strategy:
     type: Docker                      
     dockerStrategy:

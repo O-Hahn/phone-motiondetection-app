@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phone-md-webapp
+  namespace: phone-md
+  labels:
+    app: phone-md-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phone-md-webapp
+  template:
+    metadata:
+      labels:
+        app: phone-md-webapp
+    spec:
+      containers:
+      - name: phone-md-webapp
+        image: rudipailer/todo-app:latest
+        ports:
+        - containerPort: 3000
+          name: phone-md-webapp

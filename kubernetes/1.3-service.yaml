@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: phone-md-webapp
+  name: phone-md-webapp
+  namespace: phone-md
+spec:
+  type: NodePort
+  ports:
+  - name: phone-md-webapp-service
+    port: 3000
+    targetPort: 3000
+    nodePort: 31000
+  selector:
+    app: phone-md-webapp
+  

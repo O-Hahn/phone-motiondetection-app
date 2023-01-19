@@ -5,7 +5,7 @@ metadata:
     app.openshift.io/route-disabled: 'false'
     openshift.io/generated-by: OpenShiftWebConsole
   name: phone-md-app
-  namespace: phone-md-app
+  namespace: phone-md
   labels:
     app: phone-md-app
     app.kubernetes.io/component: phone-md-app
@@ -34,7 +34,7 @@ spec:
           - phone-md-app
         from:
           kind: ImageStreamTag
-          namespace: phone-md-app
+          namespace: phone-md
           name: 'phone-md-app:latest'
     - type: ConfigChange
   replicas: 1
@@ -56,6 +56,9 @@ spec:
             - containerPort: 8080
               protocol: TCP
           resources: {}
+          envFrom:
+            - configMapRef:
+              name: phone-md-app-config
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

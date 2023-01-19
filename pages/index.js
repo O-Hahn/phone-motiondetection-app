@@ -4,33 +4,32 @@ import Layout from '../components/Layout'
 export default function Home() {
 
   // Select Source / Destination Environment Parameters
-  const [destination, setDestination] = useState("1");
   const [source, setSource] = useState("1");
-
+  const [destination, setDestination] = useState("1");
+  
   // cloudantDB Setup - if destination == "cloudant"
-  const [host, setHost] = useState("300c5094-e63a-44c5-9df1-faf9c80bad9c-bluemix.cloudantnosqldb.appdomain.cloud");
-  const [userName, setUserName] = useState("apikey-v2-ihd5hebqdeyt15h5u4nfyeb1unajlsbkj2jvhvinxs6");
-  const [password, setPassword] = useState("a731325dbb0c1e2200bd3e8121cc035d");
+  const [cloudantHost, setCloudantHost] = useState(process.env.NEXT_PUBLIC_CLOUDANT_HOST_URL || "<cloudant url>");
+  const [cloudantUserName, setCloudantUserName] = useState(process.env.NEXT_PUBLIC_CLOUDANT_USER || "<cloudant user>");
+  const [cloudantPassword, setCloudantPassword] = useState(process.env.NEXT_PUBLIC_CLOUDANT_PASSWORD || "<cloudant password>");
   const [cloudantUrl, setCloudantUrl] = useState("");
 
   // IoT Setup - if destination == "IoT"
-  const [orgId, setOrgId] = useState("wb3i1b");
-  const [devType, setDevType] = useState("phone");
-  const [devId, setDevId] = useState("phone-web-app");
-  const [eventType, setEventType] = useState("motion");
-  const [token, setToken] = useState("tjbotibm");
-  const [iotUrl, setIotUrl] = useState("");
+  const [iotServer, setIotServer] = useState(process.env.NEXT_PUBLIC_IOT_SERVER || "phone-web-app");
+  const [iotTopic, setIotTopic] = useState(process.env.NEXT_PUBLIC_IOT_TOPIC || "phone");
+  const [iotUser, setIotUser] = useState(process.env.NEXT_PUBLIC_IOT_USER || "wb3i1b");
+  const [iotPassword, setIotPassword] = useState(process.env.NEXT_PUBLIC_IOT_PASSWORD || "tjbotibm");
 
   // NodeRed Url as REST-API Interface - if source == "NodeRed"
   const [nodeRedUrl, setNodeRedUrl] = useState("https://node-red-fhbgld-2021-05-14.eu-de.mybluemix.net/score_motion");
-  
+ 
   // WML Setup - if source == "WML"
-  const [cloudApiKey, setCloudApiKey] = useState('D5-GtcmW3Hm4Z3kp6QZXmqqnk-mbQiGVNGC9S2rLvDBy');
-  const [cloudRegion, setCloudRegion] = useState('us-south');
-  const [deploymentId, setDeploymentId] = useState("fdf099a7-b31a-411f-a8a0-c2c1fdbff408");
+  const [cloudApiKey, setCloudApiKey] = useState(process.env.NEXT_PUBLIC_CLOUD_API_KEY || '<your api key>');
+  const [cloudRegion, setCloudRegion] = useState(process.env.NEXT_PUBLIC_CLOUD_REGION || '<your cloud region>');
+  const [deploymentId, setDeploymentId] = useState(process.env.NEXT_PUBLIC_WML_DEPLOYMENT_ID || '<your deployment id>');
 
   // defaults 
-  const [sendOrientation, setSendOrientation] = useState(false);
+  const [deviceName, setDeviceName] = useState(process.env.NEXT_PUBLIC_DEVICE_NAME || "phone");
+  const [sendOrientation, setSendOrientation] = useState(process.env.NEXT_PUBLIC_ORIENTATION || false);
 
 
   useEffect(() => {
@@ -40,6 +39,7 @@ export default function Home() {
         let stateObj = JSON.parse(appStateJson);
         console.log(stateObj);
 
+        // Config Selector
         if (stateObj.destination) {
           setDestination(stateObj.destination);
         }
@@ -47,39 +47,35 @@ export default function Home() {
           setSource(stateObj.source);
         }
 
-        if (stateObj.host) {
-          setHost(stateObj.host);
+        // Cloudant
+        if (stateObj.cloudantHost) {
+          setCloudantHost(stateObj.cloudantHost);
         }
-        if (stateObj.userName) {
-          setUserName(stateObj.userName);
+        if (stateObj.cloudantUserName) {
+          setCloudantUserName(stateObj.cloudantUserName);
         }
-        if (stateObj.password) {
-          setPassword(stateObj.password);
+        if (stateObj.cloudantPassword) {
+          setCloudantPassword(stateObj.cloudantPassword);
         }
         if (stateObj.cloudantUrl) {
           setCloudantUrl(stateObj.cloudantUrl);
         }
 
-        if (stateObj.orgId) {
-          setOrgId(stateObj.orgId);
+        // IoT
+        if (stateObj.iotServer) {
+          setIotServer(stateObj.iotServer);
         }
-        if (stateObj.devType) {
-          setDevType(stateObj.devType);
+        if (stateObj.iotUser) {
+          setIotUser(stateObj.iotUser);
         }
-        if (stateObj.devId) {
-          setDevId(stateObj.devId);
+        if (stateObj.iotPassword) {
+          setIotPassword(stateObj.iotPassword);
         }
-        if (stateObj.eventType) {
-          setEventType(stateObj.eventType);
-        }
-        
-        if(stateObj.nodeRedUrl) {
-          setNodeRedUrl(stateObj.nodeRedUrl);
-        }
-        if(stateObj.sendOrientation) {
-          setSendOrientation(stateObj.sendOrientation);
+        if (stateObj.iotTopic) {
+          setIotTopic(stateObj.iotTopic);
         }
         
+        // WML Model
         if (stateObj.cloudApiKey) {
           setCloudApiKey(stateObj.cloudApiKey);
         }
@@ -89,6 +85,22 @@ export default function Home() {
         if (stateObj.deploymentId) {
           setDeploymentId(stateObj.deploymentId);
         }
+
+        // Node-Red 
+        if(stateObj.nodeRedUrl) {
+          setNodeRedUrl(stateObj.nodeRedUrl);
+        }
+
+        // Device Name for the Events
+        if(stateObj.deviceName) {
+          setDeviceName(stateObj.deviceName);
+        }
+        
+        // Orientation instead of Accelerator (only for test)
+        if(stateObj.sendOrientation) {
+          setSendOrientation(stateObj.sendOrientation);
+        }
+        
     }
 
   //eslint-disable-next-line
@@ -96,36 +108,32 @@ export default function Home() {
 
   useEffect(() => {
 
-    let iotUrl =  "https://" + orgId + ".messaging.internetofthings.ibmcloud.com/api/v0002/device/types/" + devType + "/devices/" + devId + "/events/" + eventType;
-    setIotUrl(iotUrl);
-    
-    let cloudantUrl =  "https://" + userName + ":" + password + "@" + host;
+    let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost;
     setCloudantUrl(cloudantUrl);
     
     let appState = {
       destination: destination,
       source: source, 
-      orgId: orgId,
-      devType: devType,
-      devId: devId,
-      eventType: eventType,
-      iotUrl: iotUrl,
-      iotToken: token,
-      host: host, 
-      userName: userName, 
-      password: password, 
+      iotServer: iotServer,
+      iotUser: iotUser,
+      iotPassword: iotPassword,
+      iotTopic: iotTopic,
+      cloudantHost: cloudantHost, 
+      cloudantUserName: cloudantUserName, 
+      cloudantPassword: cloudantPassword, 
       cloudantUrl: cloudantUrl,
-      nodeRedUrl: nodeRedUrl,
-      sendOrientation: sendOrientation,
       cloudApiKey: cloudApiKey,
       cloudRegion: cloudRegion,
-      deploymentId: deploymentId
+      deploymentId: deploymentId,
+      nodeRedUrl: nodeRedUrl,
+      deviceName: deviceName,
+      sendOrientation: sendOrientation
     }
 
     localStorage.setItem("SensorApp.State", JSON.stringify(appState));
 
   //eslint-disable-next-line
-  }, [destination, source, orgId, devType, devId, eventType, token, host, userName, password, nodeRedUrl, sendOrientation, cloudApiKey, cloudRegion, deploymentId])
+  }, [destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
 
   const onDestinationChange = (value) => {
       console.log('OnDestinationChange:' + value)
@@ -200,27 +208,27 @@ export default function Home() {
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="search"
-                name="host"
-                value={host}
-                onChange={(e) => setHost(e.target.value)} />
+                name="cloudantHost"
+                value={cloudantHost}
+                onChange={(e) => setCloudantHost(e.target.value)} />
           </div>
           <div className="flex mt-2 items-center">
               <div className="w-2/6 text-right pr-5 text-gray-600">Username:</div>
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="search"
-                name="userName"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)} />
+                name="cloudantUserName"
+                value={cloudantUserName}
+                onChange={(e) => setCloudantUserName(e.target.value)} />
           </div>
           <div className="flex mt-2 items-center">
               <div className="w-2/6 text-right pr-5 text-gray-600">Password:</div>
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} />
+                name="cloudantPassword"
+                value={cloudantPassword}
+                onChange={(e) => setCloudantPassword(e.target.value)} />
             </div>
             <div className="flex mt-2 items-center">
               <div className="w-2/6 text-right pr-5 text-gray-600">Cloudant URL:</div>
@@ -233,58 +241,43 @@ export default function Home() {
           { destination == "2" && (
           <><div className="flex mt-2">
             <div className="w-2/6"></div>
-            <div className="font-bold text-lg mt-4">Train settings - Watson IOT Foundation</div>
+            <div className="font-bold text-lg mt-4">Train settings - IOT </div>
           </div>
           <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">Organization ID:</div>
+              <div className="w-2/6 text-right pr-5 text-gray-600">IoT Server URL:</div>
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="search"
-                name="orgid"
-                value={orgId}
-                onChange={(e) => setOrgId(e.target.value)} />
+                name="iotServer"
+                value={iotServer}
+                onChange={(e) => setIotServer(e.target.value)} />
             </div>
             <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">Device type:</div>
+              <div className="w-2/6 text-right pr-5 text-gray-600">IoT User:</div>
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="search"
-                name="devType"
-                value={devType}
-                onChange={(e) => setDevType(e.target.value)} />
+                name="iotUser"
+                value={iotUser}
+                onChange={(e) => setIotUser(e.target.value)} />
             </div>
             <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">Device ID:</div>
-              <input
-                className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
-                type="search"
-                name="devId"
-                value={devId}
-                onChange={(e) => setDevId(e.target.value)} />
-            </div>
-            <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">Event Type:</div>
-              <input
-                className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
-                type="search"
-                name="eventType"
-                value={eventType}
-                onChange={(e) => setEventType(e.target.value)} />
-            </div>
-            <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">Device Token:</div>
+              <div className="w-2/6 text-right pr-5 text-gray-600">IoT Password:</div>
               <input
                 className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                 type="password"
-                name="token"
-                value={token}
-                onChange={(e) => setToken(e.target.value)} />
+                name="iotPassword"
+                value={iotPassword}
+                onChange={(e) => setIotPassword(e.target.value)} />
             </div>
             <div className="flex mt-2 items-center">
-              <div className="w-2/6 text-right pr-5 text-gray-600">IOT URL:</div>
-              <div className="w-4/6  text-sm mx-px hover:mx-0 py-2.5 px-2 pr-8 overflow-x-auto">
-                {iotUrl}
-              </div>
+              <div className="w-2/6 text-right pr-5 text-gray-600">IoT Topic:</div>
+              <input
+                className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                type="search"
+                name="iotTopic"
+                value={iotTopic}
+                onChange={(e) => setIotTopic(e.target.value)} />
             </div></>
           )}
           
@@ -321,11 +314,36 @@ export default function Home() {
                   onChange={(e) => setDeploymentId(e.target.value)} />
               </div></>
             )}
+            {source == "2" && (
+              <><div className="flex mt-2">
+              <div className="w-2/6"></div>
+              <div className="font-bold text-lg mt-4">Scoring settings - NodeRed URL</div>
+              </div>
+              <div className="flex mt-2 items-center">
+                <div className="w-2/6 text-right pr-5 text-gray-600">NodeRed Url:</div>
+                <input
+                  className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                  type="search"
+                  name="nodeRedUrl"
+                  value={nodeRedUrl}
+                  onChange={(e) => setNodeRedUrl(e.target.value)} />
+              </div></>
+            )}
+
  
           <div className="flex mt-2">
             <div className="w-2/6"></div>
             <div className="font-bold text-lg mt-4">General settings</div>
           </div>
+          <div className="flex mt-2 items-center">
+            <div className="w-2/6 text-right pr-5 text-gray-600">device name:</div>
+              <input
+                  className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                  type="search"
+                  name="deviceName"
+                  value={deviceName}
+                  onChange={(e) => setDeviceName(e.target.value)} />
+              </div>
           <div className="flex mt-2 items-center">
               <div className="w-2/6 text-right pr-5 text-gray-600">orientation data:</div>
                 <input 

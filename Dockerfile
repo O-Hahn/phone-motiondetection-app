@@ -51,7 +51,7 @@ COPY --from=builder --chown=1001:1001 /app/package.json ./package.json
 COPY --from=builder --chown=1001:1001 /app/.next/standalone ./
 COPY --from=builder --chown=1001:1001 /app/.next/static ./.next/static
 
-USER nextjs
+USER 1001
 
 EXPOSE 3000
 

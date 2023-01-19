@@ -2,7 +2,7 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: phone-md-app-route
-  namespace: phone-md-app
+  namespace: phone-md
 spec:
   path: /
   to:
