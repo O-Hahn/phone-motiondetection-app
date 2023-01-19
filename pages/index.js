@@ -3,6 +3,8 @@ import Layout from '../components/Layout'
 
 export default function Home() {
 
+  console.log('env:' + JSON.stringify(process.env))
+
   // Select Source / Destination Environment Parameters
   const [source, setSource] = useState("1");
   const [destination, setDestination] = useState("1");
@@ -14,10 +16,10 @@ export default function Home() {
   const [cloudantUrl, setCloudantUrl] = useState("");
 
   // IoT Setup - if destination == "IoT"
-  const [iotServer, setIotServer] = useState(process.env.NEXT_PUBLIC_IOT_SERVER || "phone-web-app");
-  const [iotTopic, setIotTopic] = useState(process.env.NEXT_PUBLIC_IOT_TOPIC || "phone");
-  const [iotUser, setIotUser] = useState(process.env.NEXT_PUBLIC_IOT_USER || "wb3i1b");
-  const [iotPassword, setIotPassword] = useState(process.env.NEXT_PUBLIC_IOT_PASSWORD || "tjbotibm");
+  const [iotServer, setIotServer] = useState(process.env.NEXT_PUBLIC_IOT_SERVER || "<iot server url>");
+  const [iotTopic, setIotTopic] = useState(process.env.NEXT_PUBLIC_IOT_TOPIC || "<iot topic name>");
+  const [iotUser, setIotUser] = useState(process.env.NEXT_PUBLIC_IOT_USER || "<iot user>");
+  const [iotPassword, setIotPassword] = useState(process.env.NEXT_PUBLIC_IOT_PASSWORD || "<iot password>");
 
   // NodeRed Url as REST-API Interface - if source == "NodeRed"
   const [nodeRedUrl, setNodeRedUrl] = useState("https://node-red-fhbgld-2021-05-14.eu-de.mybluemix.net/score_motion");
