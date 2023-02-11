@@ -10,7 +10,7 @@ export default function Home() {
   const [destination, setDestination] = useState("1");
   
   // cloudantDB Setup - if destination == "cloudant"
-  const [cloudantHost, setCloudantHost] = useState(process.env.NEXT_PUBLIC_CLOUDANT_HOST_URL || "<cloudant url>");
+  const [cloudantHost, setCloudantHost] = useState(process.env.NEXT_PUBLIC_CLOUDANT_HOST_URL || "<olaf>");
   const [cloudantUserName, setCloudantUserName] = useState(process.env.NEXT_PUBLIC_CLOUDANT_USER || "<cloudant user>");
   const [cloudantPassword, setCloudantPassword] = useState(process.env.NEXT_PUBLIC_CLOUDANT_PASSWORD || "<cloudant password>");
   const [cloudantUrl, setCloudantUrl] = useState("");
