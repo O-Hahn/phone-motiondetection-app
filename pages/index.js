@@ -41,11 +41,11 @@ export default function Home() {
     //  fetch('/api/LoadState', {
     //      method: 'GET',
     //  }).then(response => response.text()).then(dat => appStateJson = dat);
-    appStateJson = fetchStateFromEnv();
+    fetchStateFromEnv().then(rsp => appStateJson = rsp);
 
     console.log("Load State done!")
     console.log("ApSt:" + JSON.stringify(appStateJson));
-    
+
   }
     
     if (appStateJson) {            
