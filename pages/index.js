@@ -150,12 +150,80 @@ export default function Home() {
 
 
   const fetchStateFromEnv = async () => {
-    let rsp = {};
+    let appStateJson = {};
     await fetch('/api/LoadState', {
         method: 'GET',
-    }).then(response => response.text()).then(dat => rsp = dat);
-    console.log(rsp);
-    return rsp;
+    }).then(response => response.text()).then(dat => appStateJson = dat);
+
+    if (appStateJson) {            
+      let stateObj = JSON.parse(appStateJson);
+      console.log(stateObj);
+
+      // Config Selector
+      if (stateObj.destination) {
+        setDestination(stateObj.destination);
+      }
+      if (stateObj.source) {
+        setSource(stateObj.source);
+      }
+
+      // Cloudant
+      if (stateObj.cloudantHost) {
+        setCloudantHost(stateObj.cloudantHost);
+      }
+      if (stateObj.cloudantUserName) {
+        setCloudantUserName(stateObj.cloudantUserName);
+      }
+      if (stateObj.cloudantPassword) {
+        setCloudantPassword(stateObj.cloudantPassword);
+      }
+      if (stateObj.cloudantUrl) {
+        setCloudantUrl(stateObj.cloudantUrl);
+      }
+
+      // IoT
+      if (stateObj.iotServer) {
+        setIotServer(stateObj.iotServer);
+      }
+      if (stateObj.iotUser) {
+        setIotUser(stateObj.iotUser);
+      }
+      if (stateObj.iotPassword) {
+        setIotPassword(stateObj.iotPassword);
+      }
+      if (stateObj.iotTopic) {
+        setIotTopic(stateObj.iotTopic);
+      }
+      
+      // WML Model
+      if (stateObj.cloudApiKey) {
+        setCloudApiKey(stateObj.cloudApiKey);
+      }
+      if (stateObj.cloudRegion) {
+        setCloudRegion(stateObj.cloudRegion);
+      }
+      if (stateObj.deploymentId) {
+        setDeploymentId(stateObj.deploymentId);
+      }
+
+      // Node-Red 
+      if(stateObj.nodeRedUrl) {
+        setNodeRedUrl(stateObj.nodeRedUrl);
+      }
+
+      // Device Name for the Events
+      if(stateObj.deviceName) {
+        setDeviceName(stateObj.deviceName);
+      }
+      
+      // Orientation instead of Accelerator (only for test)
+      if(stateObj.sendOrientation) {
+        setSendOrientation(stateObj.sendOrientation);
+      }
+      
+  }
+    console.log(appStateJson);
+    return appStateJson;
   }
 
   const onDestinationChange = (value) => {
