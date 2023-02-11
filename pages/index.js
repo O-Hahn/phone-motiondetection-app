@@ -35,20 +35,13 @@ export default function Home() {
 
 
   useEffect(() => {
-//    let appStateJson = localStorage.getItem("SensorApp.State");
+
     let appStateJson = null;
-    if (!appStateJson) {
-    //  fetch('/api/LoadState', {
-    //      method: 'GET',
-    //  }).then(response => response.text()).then(dat => appStateJson = dat);
-    fetchStateFromEnv().then(rsp => appStateJson = rsp);
 
-    console.log("Load State done!")
-    console.log("ApSt:" + JSON.stringify(appStateJson));
+    const getAppState = async () => {
+      appStateJson = await fetchStateFromEnv();
 
-  }
-    
-    if (appStateJson) {            
+      if (appStateJson) {            
         let stateObj = JSON.parse(appStateJson);
         console.log(stateObj);
 
@@ -112,12 +105,17 @@ export default function Home() {
         // Orientation instead of Accelerator (only for test)
         if(stateObj.sendOrientation) {
           setSendOrientation(stateObj.sendOrientation);
-        }
-        
-    }
+        }  
+      }
+    };
+  
+    getAppState(); // run it, run it
 
+    console.log("Load State done!")
+    console.log("ApSt:" + JSON.stringify(appStateJson));
+    
   //eslint-disable-next-line
-  }, [])
+}, []);
 
   useEffect(() => {
 
@@ -155,73 +153,6 @@ export default function Home() {
         method: 'GET',
     }).then(response => response.text()).then(dat => appStateJson = dat);
 
-    if (appStateJson) {            
-      let stateObj = JSON.parse(appStateJson);
-      console.log(stateObj);
-
-      // Config Selector
-      if (stateObj.destination) {
-        setDestination(stateObj.destination);
-      }
-      if (stateObj.source) {
-        setSource(stateObj.source);
-      }
-
-      // Cloudant
-      if (stateObj.cloudantHost) {
-        setCloudantHost(stateObj.cloudantHost);
-      }
-      if (stateObj.cloudantUserName) {
-        setCloudantUserName(stateObj.cloudantUserName);
-      }
-      if (stateObj.cloudantPassword) {
-        setCloudantPassword(stateObj.cloudantPassword);
-      }
-      if (stateObj.cloudantUrl) {
-        setCloudantUrl(stateObj.cloudantUrl);
-      }
-
-      // IoT
-      if (stateObj.iotServer) {
-        setIotServer(stateObj.iotServer);
-      }
-      if (stateObj.iotUser) {
-        setIotUser(stateObj.iotUser);
-      }
-      if (stateObj.iotPassword) {
-        setIotPassword(stateObj.iotPassword);
-      }
-      if (stateObj.iotTopic) {
-        setIotTopic(stateObj.iotTopic);
-      }
-      
-      // WML Model
-      if (stateObj.cloudApiKey) {
-        setCloudApiKey(stateObj.cloudApiKey);
-      }
-      if (stateObj.cloudRegion) {
-        setCloudRegion(stateObj.cloudRegion);
-      }
-      if (stateObj.deploymentId) {
-        setDeploymentId(stateObj.deploymentId);
-      }
-
-      // Node-Red 
-      if(stateObj.nodeRedUrl) {
-        setNodeRedUrl(stateObj.nodeRedUrl);
-      }
-
-      // Device Name for the Events
-      if(stateObj.deviceName) {
-        setDeviceName(stateObj.deviceName);
-      }
-      
-      // Orientation instead of Accelerator (only for test)
-      if(stateObj.sendOrientation) {
-        setSendOrientation(stateObj.sendOrientation);
-      }
-      
-  }
     console.log(appStateJson);
     return appStateJson;
   }
