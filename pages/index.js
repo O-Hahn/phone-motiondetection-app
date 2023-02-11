@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 
 export default function Home() {
 
-  console.log('env:' + JSON.stringify(process.env))
+  //console.log('env:' + JSON.stringify(process.env))
 
   // Select Source / Destination Environment Parameters
   const [source, setSource] = useState("1");
@@ -35,7 +35,12 @@ export default function Home() {
 
 
   useEffect(() => {
-    const appStateJson = localStorage.getItem("SensorApp.State");
+    let appStateJson = localStorage.getItem("SensorApp.State");
+    if (!appStateJson) {
+      fetch('/api/LoadState', {
+          method: 'GET',
+      }).then(response => response.text()).then(dat => appStateJson = dat);
+    }
     
     if (appStateJson) {            
         let stateObj = JSON.parse(appStateJson);
@@ -136,6 +141,16 @@ export default function Home() {
 
   //eslint-disable-next-line
   }, [destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
+
+
+  const fetchStateFromEnv = async () => {
+    let rsp = {};
+    await fetch('/api/LoadState', {
+        method: 'GET',
+    }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+    console.log(rsp);
+    return rsp;
+  }
 
   const onDestinationChange = (value) => {
       console.log('OnDestinationChange:' + value)
