@@ -38,11 +38,15 @@ export default function Home() {
 //    let appStateJson = localStorage.getItem("SensorApp.State");
     let appStateJson = null;
     if (!appStateJson) {
-      fetch('/api/LoadState', {
-          method: 'GET',
-      }).then(response => response.text()).then(dat => appStateJson = dat);
-      console.log("Load State done!")
-    }
+    //  fetch('/api/LoadState', {
+    //      method: 'GET',
+    //  }).then(response => response.text()).then(dat => appStateJson = dat);
+    appStateJson = fetchStateFromEnv();
+
+    console.log("Load State done!")
+    console.log("ApSt:" + JSON.stringify(appStateJson));
+    
+  }
     
     if (appStateJson) {            
         let stateObj = JSON.parse(appStateJson);
@@ -149,7 +153,7 @@ export default function Home() {
     let rsp = {};
     await fetch('/api/LoadState', {
         method: 'GET',
-    }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+    }).then(response => response.text()).then(dat => rsp = dat);
     console.log(rsp);
     return rsp;
   }
