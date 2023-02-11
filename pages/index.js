@@ -35,11 +35,13 @@ export default function Home() {
 
 
   useEffect(() => {
-    let appStateJson = localStorage.getItem("SensorApp.State");
+//    let appStateJson = localStorage.getItem("SensorApp.State");
+    let appStateJson = null;
     if (!appStateJson) {
       fetch('/api/LoadState', {
           method: 'GET',
       }).then(response => response.text()).then(dat => appStateJson = dat);
+      console.log("Load State done!")
     }
     
     if (appStateJson) {            
