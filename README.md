@@ -67,19 +67,19 @@ The local version could not be used for the app deployment because it is not a H
 Create / Edit the .env.local file with the necessary Cloud/API/Keys/URLs to the deployed environment of your setup. This helps to use the WebApp without editing the settings because they are injected as default. 
 Possible settings for the .env.local file: 
 ```bash
-NEXT_PUBLIC_SEND_ORIENTATION=false
-NEXT_PUBLIC_DEVICE_NAME=iPhone
-NEXT_PUBLIC_CLOUD_API_KEY=xx
-NEXT_PUBLIC_CLOUD_REGION=us-south
-NEXT_PUBLIC_WML_DEPLOYMENT_ID=xx
-NEXT_PUBLIC_CLOUDANT_HOST_URL=xxx
-NEXT_PUBLIC_CLOUDANT_USER=xx
-NEXT_PUBLIC_CLOUDANT_PASSWORD=xx
-NEXT_PUBLIC_NODE_RED_URL=xx
-NEXT_PUBLIC_IOT_SERVER=wss://wss-mqtt.xxxxx.eu-de.containers.appdomain.cloud
-NEXT_PUBLIC_IOT_TOPIC=phone-motion
-NEXT_PUBLIC_IOT_USER=xxx
-NEXT_PUBLIC_IOT_PASSWORD=xxx
+SEND_ORIENTATION=false
+DEVICE_NAME=iPhone
+CLOUD_API_KEY=xx
+CLOUD_REGION=us-south
+WML_DEPLOYMENT_ID=xx
+CLOUDANT_HOST_URL=xxx
+CLOUDANT_USER=xx
+CLOUDANT_PASSWORD=xx
+NODE_RED_URL=xx
+IOT_SERVER=wss://wss-mqtt.xxxxx.eu-de.containers.appdomain.cloud
+IOT_TOPIC=phone-motion
+IOT_USER=xxx
+IOT_PASSWORD=xxx
 ```
 
 ## Deploy build into registry
