@@ -10,104 +10,46 @@ export default function Home() {
   const [destination, setDestination] = useState("1");
   
   // cloudantDB Setup - if destination == "cloudant"
-  const [cloudantHost, setCloudantHost] = useState(process.env.NEXT_PUBLIC_CLOUDANT_HOST_URL || "<cloudant url>");
-  const [cloudantUserName, setCloudantUserName] = useState(process.env.NEXT_PUBLIC_CLOUDANT_USER || "<cloudant user>");
-  const [cloudantPassword, setCloudantPassword] = useState(process.env.NEXT_PUBLIC_CLOUDANT_PASSWORD || "<cloudant password>");
-  const [cloudantUrl, setCloudantUrl] = useState("");
+  const [cloudantHost, setCloudantHost] = useState("<cloudant host>");
+  const [cloudantUserName, setCloudantUserName] = useState("<cloudant user>");
+  const [cloudantPassword, setCloudantPassword] = useState("<cloudant password>");
+  const [cloudantUrl, setCloudantUrl] = useState("<cloudant url>");
 
   // IoT Setup - if destination == "IoT"
-  const [iotServer, setIotServer] = useState(process.env.NEXT_PUBLIC_IOT_SERVER || "<iot server url>");
-  const [iotTopic, setIotTopic] = useState(process.env.NEXT_PUBLIC_IOT_TOPIC || "<iot topic name>");
-  const [iotUser, setIotUser] = useState(process.env.NEXT_PUBLIC_IOT_USER || "<iot user>");
-  const [iotPassword, setIotPassword] = useState(process.env.NEXT_PUBLIC_IOT_PASSWORD || "<iot password>");
+  const [iotServer, setIotServer] = useState("<iot server url>");
+  const [iotTopic, setIotTopic] = useState("<iot topic name>");
+  const [iotUser, setIotUser] = useState("<iot user>");
+  const [iotPassword, setIotPassword] = useState("<iot password>");
 
   // NodeRed Url as REST-API Interface - if source == "NodeRed"
-  const [nodeRedUrl, setNodeRedUrl] = useState("https://node-red-fhbgld-2021-05-14.eu-de.mybluemix.net/score_motion");
+  const [nodeRedUrl, setNodeRedUrl] = useState("<node red url>");
  
   // WML Setup - if source == "WML"
-  const [cloudApiKey, setCloudApiKey] = useState(process.env.NEXT_PUBLIC_CLOUD_API_KEY || '<your api key>');
-  const [cloudRegion, setCloudRegion] = useState(process.env.NEXT_PUBLIC_CLOUD_REGION || '<your cloud region>');
-  const [deploymentId, setDeploymentId] = useState(process.env.NEXT_PUBLIC_WML_DEPLOYMENT_ID || '<your deployment id>');
+  const [cloudApiKey, setCloudApiKey] = useState('<IBM cloud api key>');
+  const [cloudRegion, setCloudRegion] = useState('<IBM cloud region>');
+  const [deploymentId, setDeploymentId] = useState('<IBM cloud WML deployment id>');
 
   // defaults 
-  const [deviceName, setDeviceName] = useState(process.env.NEXT_PUBLIC_DEVICE_NAME || "phone");
-  const [sendOrientation, setSendOrientation] = useState(process.env.NEXT_PUBLIC_ORIENTATION || false);
+  const [deviceName, setDeviceName] = useState("phone");
+  const [sendOrientation, setSendOrientation] = useState(false);
 
 
   useEffect(() => {
     let appStateJson = localStorage.getItem("SensorApp.State");
     if (!appStateJson) {
-      fetch('/api/LoadState', {
-          method: 'GET',
-      }).then(response => response.text()).then(dat => appStateJson = dat);
-    }
-    
-    if (appStateJson) {            
+      fetchStateFromEnv();
+      console.log("fetch state sent");
+      // fetch('/api/LoadState', {
+      //     method: 'GET',
+      // }).then(response => response.text()).then(dat => appStateJson = dat);
+      //   console.log("state loaded");
+      
+    } else {    
         let stateObj = JSON.parse(appStateJson);
         console.log(stateObj);
 
-        // Config Selector
-        if (stateObj.destination) {
-          setDestination(stateObj.destination);
-        }
-        if (stateObj.source) {
-          setSource(stateObj.source);
-        }
-
-        // Cloudant
-        if (stateObj.cloudantHost) {
-          setCloudantHost(stateObj.cloudantHost);
-        }
-        if (stateObj.cloudantUserName) {
-          setCloudantUserName(stateObj.cloudantUserName);
-        }
-        if (stateObj.cloudantPassword) {
-          setCloudantPassword(stateObj.cloudantPassword);
-        }
-        if (stateObj.cloudantUrl) {
-          setCloudantUrl(stateObj.cloudantUrl);
-        }
-
-        // IoT
-        if (stateObj.iotServer) {
-          setIotServer(stateObj.iotServer);
-        }
-        if (stateObj.iotUser) {
-          setIotUser(stateObj.iotUser);
-        }
-        if (stateObj.iotPassword) {
-          setIotPassword(stateObj.iotPassword);
-        }
-        if (stateObj.iotTopic) {
-          setIotTopic(stateObj.iotTopic);
-        }
-        
-        // WML Model
-        if (stateObj.cloudApiKey) {
-          setCloudApiKey(stateObj.cloudApiKey);
-        }
-        if (stateObj.cloudRegion) {
-          setCloudRegion(stateObj.cloudRegion);
-        }
-        if (stateObj.deploymentId) {
-          setDeploymentId(stateObj.deploymentId);
-        }
-
-        // Node-Red 
-        if(stateObj.nodeRedUrl) {
-          setNodeRedUrl(stateObj.nodeRedUrl);
-        }
-
-        // Device Name for the Events
-        if(stateObj.deviceName) {
-          setDeviceName(stateObj.deviceName);
-        }
-        
-        // Orientation instead of Accelerator (only for test)
-        if(stateObj.sendOrientation) {
-          setSendOrientation(stateObj.sendOrientation);
-        }
-        
+        setStateFromStateObj(stateObj);
+        console.log("react state set");   
     }
 
   //eslint-disable-next-line
@@ -138,18 +80,56 @@ export default function Home() {
     }
 
     localStorage.setItem("SensorApp.State", JSON.stringify(appState));
+    console.log("app state written");
 
   //eslint-disable-next-line
   }, [destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
 
 
+  const setStateFromStateObj = (newState) => {
+      console.log("set state from newState");
+      console.log(newState);
+      // Config Selector
+        setDestination(newState.destination);
+        setSource(newState.source);
+
+      // Cloudant
+        setCloudantHost(newState.cloudantHost);
+        console.log("set cloudant host to " + newState.cloudantHost);
+        setCloudantUserName(newState.cloudantUserName);
+        setCloudantPassword(newState.cloudantPassword);
+      let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost;
+      setCloudantUrl(newCloudantUrl);
+      console.log("set cloudant url to " + newCloudantUrl);
+
+      // IoT
+        setIotServer(newState.iotServer);
+        setIotUser(newState.iotUser);
+        setIotPassword(newState.iotPassword);
+        setIotTopic(newState.iotTopic);
+      
+      // WML Model
+        setCloudApiKey(newState.cloudApiKey);
+        setCloudRegion(newState.cloudRegion);
+        setDeploymentId(newState.deploymentId);
+      // Node-Red 
+        setNodeRedUrl(newState.nodeRedUrl);
+
+      // Device Name for the Events
+        setDeviceName(newState.deviceName);
+      
+      // Orientation instead of Accelerator (only for test)
+        setSendOrientation(newState.sendOrientation === 'true');
+  }
+
   const fetchStateFromEnv = async () => {
-    let rsp = {};
+    let rsp = null;
     await fetch('/api/LoadState', {
         method: 'GET',
-    }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+    }).then(response => response.text()).then(dat => rsp = dat);
+    console.log("App State fetched");
     console.log(rsp);
-    return rsp;
+    setStateFromStateObj(JSON.parse(rsp));
   }
 
   const onDestinationChange = (value) => {
