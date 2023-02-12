@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
+import Image from "next/image";
+
 
 export default function Home() {
 
@@ -351,6 +353,19 @@ export default function Home() {
                   onChange={(e) => setSendOrientation(e.target.checked)}
               />
           </div>
+
+          <div className="flex mt-2 items-center">
+              <div className="w-2/6 text-right pr-5 text-gray-600">refresh from env:</div>
+
+                        <button 
+                            className="bg-indigo-500 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex items-center w-64"
+                            onClick={fetchStateFromEnv}
+                        >
+                            <Image className="filter-white" src="/static/Refresh.svg" width="30" height="30" alt="Start" />
+                            <span className="ml-6">REFRESH</span>
+                        </button>
+          </div>
+
 
         </div>
     </Layout >
