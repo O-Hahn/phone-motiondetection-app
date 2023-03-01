@@ -40,9 +40,7 @@ async function sendScoreML(req, res) {
             input_data: [
                 {
                     values: {
-                        payload: {
-                            dataArray: [...data.dataObj.dataArray],
-                        } 
+                        dataArray: [...data.dataObj.dataArray],
                     }
                 }
             ],
