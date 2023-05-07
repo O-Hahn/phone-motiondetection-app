@@ -7,6 +7,9 @@ export default function Home() {
 
   //console.log('env:' + JSON.stringify(process.env))
 
+  // Select Application Modus ("HarryPotter" / "Digit Detection") Parameters
+  const [appMode, setAppMode] = useState("Harry Potter");
+
   // Select Source / Destination Environment Parameters
   const [source, setSource] = useState("1");
   const [destination, setDestination] = useState("1");
@@ -63,6 +66,7 @@ export default function Home() {
     setCloudantUrl(cloudantUrl);
     
     let appState = {
+      appMode: appMode,
       destination: destination,
       source: source, 
       iotServer: iotServer,
@@ -85,12 +89,15 @@ export default function Home() {
     console.log("app state written");
 
   //eslint-disable-next-line
-  }, [destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
+  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
 
 
   const setStateFromStateObj = (newState) => {
       console.log("set state from newState");
       console.log(newState);
+      // Mode Selector
+        setAppMode(newState.appMode);
+
       // Config Selector
         setDestination(newState.destination);
         setSource(newState.source);
@@ -134,19 +141,52 @@ export default function Home() {
     setStateFromStateObj(JSON.parse(rsp));
   }
 
+  const onAppModeChange = (value) => {
+      console.log('OnAppModeChange:' + value);
+      setAppMode(value);
+  }
+
   const onDestinationChange = (value) => {
-      console.log('OnDestinationChange:' + value)
-      setDestination(value)
+      console.log('OnDestinationChange:' + value);
+      setDestination(value);
   }
 
   const onSourceChange = (value) => {
-    console.log('OnSourceChange:' + value)
-    setSource(value)
+    console.log('OnSourceChange:' + value);
+    setSource(value);
   }
+  
   return (
       <Layout>
         <div className="mb-16 w-full">
         <div className="flex mt-2">
+            <div className="w-2/6"></div>
+            <div className="font-bold text-lg mt-4">Global Application Setting</div>
+          </div>
+          <div className="flex mt-2 items-center">
+            <div className="w-2/6 text-right pr-5 text-gray-600">Application Mode:</div> 
+            <div className="mb-3 xl:w-96">
+              <select onChange={(e) => onAppModeChange(e.target.value)} className="form-select appearance-none
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-700
+                bg-white bg-clip-padding bg-no-repeat
+                border border-solid border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+                  <option value="Harry Potter">Harry Potter</option>
+                  <option value="Digit Detection">Digit Detection</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex mt-2">
             <div className="w-2/6"></div>
             <div className="font-bold text-lg mt-4">Source / Destination Environment</div>
           </div>

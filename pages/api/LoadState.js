@@ -3,6 +3,9 @@ export default async function handler(req, res) {
     //console.log(req);
     switch (req.method) {
         case 'GET': {
+            // Application Mode - "Harry Potter" or "Digit Detection"
+            const appMode = process.env.APP_MODE || "Harry Potter";
+
             //console.log(process.env);
             const source = "1";
             const destination= "1";
@@ -32,6 +35,7 @@ export default async function handler(req, res) {
             const sendOrientation = process.env.ORIENTATION || false;
           
             let appState = {
+                appMode: appMode,
                 destination: destination,
                 source: source, 
                 iotServer: iotServer,
