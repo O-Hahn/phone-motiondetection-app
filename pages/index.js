@@ -63,7 +63,8 @@ export default function Home() {
 
   useEffect(() => {
 
-    let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost + "/" + cloudantDB;
+    // let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost + "/" + cloudantDB;
+    let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost;
     setCloudantUrl(cloudantUrl);
     
     let appState = {
@@ -110,7 +111,8 @@ export default function Home() {
         setCloudantUserName(newState.cloudantUserName);
         setCloudantPassword(newState.cloudantPassword);
         setCloudantDB(newState.cloudantDB);
-        let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost + "/" + newState.cloudantDB;
+        // let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost + "/" + newState.cloudantDB;
+        let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost;
         setCloudantUrl(newCloudantUrl);
         console.log("set cloudant url to " + newCloudantUrl);
 
