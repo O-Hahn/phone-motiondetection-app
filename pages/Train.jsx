@@ -43,21 +43,39 @@ const Train = () => {
         console.log("Handle acceleration")
 //        console.log(event);
         let now = new Date();
-        let figure = appState.appMode == "Harry Potter" ? magicspell : key;
 
         if(recording) {
-            var data = {
-                device: appState.deviceName,
-                figure: figure,
-                motionset: motionset,
-                date: now.toISOString(),
-                timestamp: now.getTime(),
-                acceleration: {
-                    x: event.acceleration.x,
-                    y: event.acceleration.y,
-                    z: event.acceleration.z
-                },
-            };
+            var data;
+            if (appState.appMode == "Harry Potter") {
+                const msi = magicSpellImage.find((e) => e.name == magicspell);
+                let id = msi ? msi.id : "";
+                data = {
+                    device: appState.deviceName,
+                    id:id,
+                    magicspell: magicspell,
+                    motionset: motionset,
+                    date: now.toISOString(),
+                    timestamp: now.getTime(),
+                    acceleration: {
+                        x: event.acceleration.x,
+                        y: event.acceleration.y,
+                        z: event.acceleration.z
+                    },
+                };    
+            } else {
+                data = {
+                    device: appState.deviceName,
+                    figure: key,
+                    motionset: motionset,
+                    date: now.toISOString(),
+                    timestamp: now.getTime(),
+                    acceleration: {
+                        x: event.acceleration.x,
+                        y: event.acceleration.y,
+                        z: event.acceleration.z
+                    },
+                };    
+            }
             console.log("length: " + dataObj.dataArray.length);
             let len = dataObj.dataArray.length;
             if (len > 0) {

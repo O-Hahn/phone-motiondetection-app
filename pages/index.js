@@ -78,7 +78,7 @@ export default function Home() {
       cloudantHost: cloudantHost, 
       cloudantUserName: cloudantUserName, 
       cloudantPassword: cloudantPassword,
-      cloudantDB: cloudantDB, 
+      cloudantDB: cloudantDB,
       cloudantUrl: cloudantUrl,
       cloudApiKey: cloudApiKey,
       cloudRegion: cloudRegion,
@@ -111,6 +111,7 @@ export default function Home() {
         setCloudantUserName(newState.cloudantUserName);
         setCloudantPassword(newState.cloudantPassword);
         setCloudantDB(newState.cloudantDB);
+
         // let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost + "/" + newState.cloudantDB;
         let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost;
         setCloudantUrl(newCloudantUrl);
