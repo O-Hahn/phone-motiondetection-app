@@ -91,7 +91,7 @@ export default function Home() {
     console.log("app state written");
 
   //eslint-disable-next-line
-  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantDB, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
+  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantUrl, cloudantDB, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
 
 
   const setStateFromStateObj = (newState) => {
