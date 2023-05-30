@@ -11,8 +11,33 @@ const Score = () => {
     const [sendOrientation, setSendOrientation] = useState(false);
     const [appState, setAppState] = useState({});
     const [pred, setPred] = useState("");
+    const [magicspell, setMagicSpell] = useState("Aguamenti");
+    const [magicSpellImg, setMagicSpellImg] = useState("/harrypotter/Aguamenti.png");
     const [mlUrl, setMlUrl] = useState("");
 
+    let mode = appState.appMode == "Harry Potter";
+    let magicSpellImage = [
+        {id: "1", name: "Aguamenti", image: "/harrypotter/Aguamenti.png"},
+        {id: "2", name: "Alohomora", image: "/harrypotter/Alohomora.png"},
+        {id: "3", name: "Aparecium", image: "/harrypotter/Aparecium.png"},
+        {id: "4", name: "Arresto Momentum", image: "/harrypotter/Arresto Momentum.png"},
+        {id: "5", name: "Ascendio ", image: "/harrypotter/Ascendio .png"},
+        {id: "6", name: "Descendo", image: "/harrypotter/Descendo.png"},
+        {id: "7", name: "Finite Incantatem", image: "/harrypotter/Finite Incantatem.png"},
+        {id: "8", name: "Herbivicus", image: "/harrypotter/Herbivicus.png"},
+        {id: "9", name: "Incendio", image: "/harrypotter/Incendio.png"},
+        {id: "10", name: "Locomotor", image: "/harrypotter/Locomotor.png"},
+        {id: "11", name: "Meteolohex Recanto", image: "/harrypotter/Meteolohex Recanto.png"},
+        {id: "12", name: "Nox Lumos ", image: "/harrypotter/Nox Lumos .png"},
+        {id: "13", name: "Oppungno", image: "/harrypotter/Oppungno.png"},
+        {id: "14", name: "Reparo", image: "/harrypotter/Reparo.png"},
+        {id: "15", name: "Revelio", image: "/harrypotter/Revelio.png"},
+        {id: "16", name: "Silencio", image: "/harrypotter/Silencio.png"},
+        {id: "17", name: "Specialis Revelio", image: "/harrypotter/Specialis Revelio.png"},
+        {id: "18", name: "Stupor", image: "/harrypotter/Stupor.png"},
+        {id: "19", name: "Tarantallegra", image: "/harrypotter/Tarantallegra.png"},
+        {id: "20", name: "Wingardium Leviosa", image: "/harrypotter/Wingardium Leviosa.png"}
+   ]
 
     const handleAcceleration = (event) => {
         console.log("Handle acceleration")
@@ -134,7 +159,15 @@ const Score = () => {
             body: JSON.stringify(req),
         }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
         console.log(rsp);
-        setPred(rsp.pred);
+        if (mode) {
+            setMagicSpell(rsp.pred);
+
+            const msi = magicSpellImage.find((e) => e.name == rsp.pred);
+            console.log("Image: " + msi.image);
+            setMagicSpellImg(msi.image);
+        } else {
+            setPred(rsp.pred);
+        }
     };
 
     useEffect(() => {
@@ -174,8 +207,6 @@ const Score = () => {
         };
         // eslint-disable-next-line
     }, [recording, dataObj,sendOrientation]);
-
-
 
 
     return (
@@ -237,23 +268,42 @@ const Score = () => {
                         </div>
                 ) : (
                     <div className="flex mt-2">
-                    <div className="w-2/6"></div>
-                    <button disabled
-                        className="disabled:bg-red-500 disabled:shadow-none disabled:text-slate-500 disabled:border-slate-200 bg-indigo-500 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex items-center w-64"
-                        onClick={handleSend}
-                    >
-                        <Image className="filter-white" src="/static/Send.svg" width="30" height="30" alt="Start" />
-                        <span className="ml-4">SEND</span>
-                    </button>
-                </div>           
+                        <div className="w-2/6"></div>
+                        <button disabled
+                            className="disabled:bg-red-500 disabled:shadow-none disabled:text-slate-500 disabled:border-slate-200 bg-indigo-500 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex items-center w-64"
+                            onClick={handleSend}
+                        >
+                            <Image className="filter-white" src="/static/Send.svg" width="30" height="30" alt="Start" />
+                            <span className="ml-4">SEND</span>
+                        </button>
+                    </div>           
                 ) }
-  
-                <div>
-                    <div className="flex mt-2">
-                        <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Result:</div>
-                        <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 border-inherit border-2 bg-orange-300 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{pred}</div>
+
+                {mode ? (
+                    <div>
+                        <div className="flex mt-2">
+                            <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Magic Spell Result:</div>
+                            <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 
+                                border-inherit border-2 bg-orange-300 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 
+                                py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{pred}</div>
+                        </div>
+                        <div className="flex mt-2">
+                            <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Image:</div>
+                            <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 
+                            border-inherit border-2 bg-black hover:border-blue-100 mx-px hover:mx-0 hover:border-2 
+                            py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">
+                                <Image src={magicSpellImg} alt={magicSpellImg} width={290} height={224} />
+                            </div>
+                         </div>
                     </div>
-                </div>
+                ) : (
+                    <div>
+                        <div className="flex mt-2">
+                            <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Figure Result:</div>
+                            <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 border-inherit border-2 bg-orange-300 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{pred}</div>
+                        </div>
+                    </div>
+                )}
 
                 {dataObj && (
                     <div>

@@ -386,25 +386,3 @@ const Train = () => {
 }
 
 export default Train;
-
-                    // <option value="Aguamenti">Aguamenti</option>
-                    // <option value="Alohomora">Alohomora</option>
-                    // <option value="Aparecium">Aparecium</option>
-                    // <option value="Arresto Momentum">Arresto Momentum</option>
-                    // <option value="Ascendio">Ascendio</option>
-                    // <option value="Descendo">Descendo</option>
-                    // <option value="Finite Incantatem">Finite Incantatem</option>
-                    // <option value="Herbivicus">Herbivicus</option>
-                    // <option value="Incendio">Incendio</option>
-                    // <option value="Locomotor">Locomotor</option>
-                    // <option value="Meteorlohex Recanto">Meteorlohex Recanto</option>
-                    // <option value="Nox Lumos">Nox Lumos</option>
-                    // <option value="Oppungno">Oppungno</option>
-                    // <option value="Reparo">Reparo</option>
-                    // <option value="Revelio">Revelio</option>
-                    // <option value="Silencio">Silencio</option>
-                    // <option value="Specialis Revelio">Specialis Revelio</option>
-                    // <option value="Stupor">Stupor</option>
-                    // <option value="Tarantallegra">Tarantallegra</option>
-                    // <option value="Wingardium Leviosa">Wingardium Leviosa</option>
-
