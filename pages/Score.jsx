@@ -11,8 +11,8 @@ const Score = () => {
     const [sendOrientation, setSendOrientation] = useState(false);
     const [appState, setAppState] = useState({});
     const [pred, setPred] = useState("");
-    const [magicspell, setMagicSpell] = useState("Aguamenti");
-    const [magicSpellImg, setMagicSpellImg] = useState("/harrypotter/Aguamenti.png");
+    const [magicspell, setMagicSpell] = useState("");
+    const [magicSpellImg, setMagicSpellImg] = useState("/harrypotter/Blank.png");
     const [mlUrl, setMlUrl] = useState("");
 
     let mode = appState.appMode == "Harry Potter";
