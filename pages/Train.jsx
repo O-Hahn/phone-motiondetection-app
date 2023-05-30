@@ -139,6 +139,10 @@ const Train = () => {
         if(appState.destination == "1") {
             let req = {
                 url: appState.cloudantUrl,
+                host: appState.cloudantHost,
+                user: appState.cloudantUserName,
+                password: appState.cloudantPassword,
+                db: appState.cloudantDB,
                 dataObj: dataObj
             }
             let response = await fetch('/api/TrainCloudant', {

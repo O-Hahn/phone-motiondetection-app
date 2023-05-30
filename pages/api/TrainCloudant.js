@@ -19,7 +19,12 @@ async function sendTrainCloudant(req, res) {
     try {
         console.log("TrainCloudant.sendTrainCloudant()");
         let data = JSON.parse(req.body);
-        let url = data.url + "/harrypotter";
+        let user = data.user;
+        let password = data.password;
+        let host = data.host;
+        let db = data.db;
+
+        let url = "https://" + host + "/" + db;
         // let url = data.url;
         console.log("train CloudantDB req url = " + url);
         console.log(data);
@@ -32,6 +37,7 @@ async function sendTrainCloudant(req, res) {
             headers: { 
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+                "Authorization": "Basic " + btoa(user + ":" + password)
                 // "Authorization": 'Basic ' + Buffer.from("use-token-auth:" + data.token).toString('Base64'),
             },
         }).then(response => resp = response);

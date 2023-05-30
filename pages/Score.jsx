@@ -13,6 +13,7 @@ const Score = () => {
     const [pred, setPred] = useState("");
     const [magicspell, setMagicSpell] = useState("");
     const [magicSpellImg, setMagicSpellImg] = useState("/harrypotter/Blank.png");
+    const [digitImg, setdigitImg] = useState("/digits/blank.png");
     const [mlUrl, setMlUrl] = useState("");
 
     let mode = appState.appMode == "Harry Potter";
@@ -37,6 +38,19 @@ const Score = () => {
         {id: "18", name: "Stupor", image: "/harrypotter/Stupor.png"},
         {id: "19", name: "Tarantallegra", image: "/harrypotter/Tarantallegra.png"},
         {id: "20", name: "Wingardium Leviosa", image: "/harrypotter/Wingardium Leviosa.png"}
+   ]
+
+   let digitImage = [
+    {id: "0", name: "zero", image: "/digits/zero.png"},
+    {id: "1", name: "one", image: "/digits/one.png"},
+    {id: "2", name: "two", image: "/digits/two.png"},
+    {id: "3", name: "three", image: "/digits/three.png"},
+    {id: "4", name: "four", image: "/digits/four.png"},
+    {id: "5", name: "fife", image: "/digits/five.png"},
+    {id: "6", name: "six", image: "/digits/six.png"},
+    {id: "7", name: "seven", image: "/digits/seven.png"},
+    {id: "8", name: "eight", image: "/digits/eight.png"},
+    {id: "9", name: "nine", image: "/digits/nine.png"}
    ]
 
     const handleAcceleration = (event) => {
@@ -167,6 +181,14 @@ const Score = () => {
             setMagicSpellImg(msi.image);
         } else {
             setPred(rsp.pred);
+
+            const dimg = digitImage.find((e) => e.id == rsp.pred);
+            if (dimg) {
+                console.log("Image: " + dimg.image);
+                setdigitImg(dimg.image);    
+            } else {
+                setdigitImg("/digits/blank.png");
+            }
         }
     };
 
@@ -302,7 +324,15 @@ const Score = () => {
                             <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Figure Result:</div>
                             <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 border-inherit border-2 bg-orange-300 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{pred}</div>
                         </div>
-                    </div>
+                        <div className="flex mt-2">
+                            <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Image:</div>
+                            <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 
+                            border-inherit border-2 bg-black hover:border-blue-100 mx-px hover:mx-0 hover:border-2 
+                            py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">
+                                <Image src={digitImg} alt={digitImg} width={290} height={224} />
+                           </div>
+                        </div> 
+                    </div>               
                 )}
 
                 {dataObj && (
