@@ -28,7 +28,7 @@ export default function Home() {
   const [iotPassword, setIotPassword] = useState("<iot password>");
 
   // NodeRed Url as REST-API Interface - if source == "NodeRed"
-  const [nodeRedUrl, setNodeRedUrl] = useState("<node red url>");
+  const [restUrl, setRestUrl] = useState("<REST Url>");
  
   // WML Setup - if source == "WML"
   const [cloudApiKey, setCloudApiKey] = useState('<IBM cloud api key>');
@@ -83,7 +83,7 @@ export default function Home() {
       cloudApiKey: cloudApiKey,
       cloudRegion: cloudRegion,
       deploymentId: deploymentId,
-      nodeRedUrl: nodeRedUrl,
+      restUrl: restUrl,
       deviceName: deviceName,
       sendOrientation: sendOrientation
     }
@@ -92,7 +92,7 @@ export default function Home() {
     console.log("app state written");
 
   //eslint-disable-next-line
-  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantUrl, cloudantDB, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
+  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantUrl, cloudantDB, cloudApiKey, cloudRegion, deploymentId, restUrl, deviceName, sendOrientation])
 
 
   const setStateFromStateObj = (newState) => {
@@ -126,8 +126,9 @@ export default function Home() {
         setCloudApiKey(newState.cloudApiKey);
         setCloudRegion(newState.cloudRegion);
         setDeploymentId(newState.deploymentId);
-      // Node-Red 
-        setNodeRedUrl(newState.nodeRedUrl);
+
+      // Rest 
+        setRestUrl(newState.restUrl);
 
       // Device Name for the Events
         setDeviceName(newState.deviceName);
@@ -171,7 +172,7 @@ export default function Home() {
           <div className="flex mt-2 items-center">
             <div className="w-2/6 text-right pr-5 text-gray-600">Application Mode:</div> 
             <div className="mb-3 xl:w-96">
-              <select onChange={(e) => onAppModeChange(e.target.value)} className="form-select appearance-none
+              <select value={appMode} onChange={(e) => onAppModeChange(e.target.value)} className="form-select appearance-none
                 block
                 w-full
                 px-3
@@ -198,7 +199,7 @@ export default function Home() {
           <div className="flex mt-2 items-center">
             <div className="w-2/6 text-right pr-5 text-gray-600">Destination:</div> 
             <div className="mb-3 xl:w-96">
-              <select onChange={(e) => onDestinationChange(e.target.value)} className="form-select appearance-none
+              <select value={destination} onChange={(e) => onDestinationChange(e.target.value)} className="form-select appearance-none
                 block
                 w-full
                 px-3
@@ -221,7 +222,7 @@ export default function Home() {
           <div className="flex mt-2 items-center">    
             <div className="w-2/6 text-right pr-5 text-gray-600">Source Environment:</div>      
             <div className="mb-3 xl:w-96">
-              <select onChange={(e) => onSourceChange(e.target.value)} className="form-select appearance-none
+              <select value={source} onChange={(e) => onSourceChange(e.target.value)} className="form-select appearance-none
                 block
                 w-full
                 px-3
@@ -237,7 +238,7 @@ export default function Home() {
                 m-0
                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
                   <option value="1">WML</option>
-                  <option value="2">NodeRed-RestAPI</option>
+                  <option value="2">Rest-API</option>
               </select>
             </div>
           </div>
@@ -370,16 +371,16 @@ export default function Home() {
             {source == "2" && (
               <><div className="flex mt-2">
               <div className="w-2/6"></div>
-              <div className="font-bold text-lg mt-4">Scoring settings - NodeRed URL</div>
+              <div className="font-bold text-lg mt-4">Scoring settings - REST URL</div>
               </div>
               <div className="flex mt-2 items-center">
-                <div className="w-2/6 text-right pr-5 text-gray-600">NodeRed Url:</div>
+                <div className="w-2/6 text-right pr-5 text-gray-600">REST Url:</div>
                 <input
                   className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
                   type="search"
-                  name="nodeRedUrl"
-                  value={nodeRedUrl}
-                  onChange={(e) => setNodeRedUrl(e.target.value)} />
+                  name="restUrl"
+                  value={restUrl}
+                  onChange={(e) => setRestUrl(e.target.value)} />
               </div></>
             )}
 
@@ -419,8 +420,6 @@ export default function Home() {
                             <span className="ml-6">REFRESH</span>
                         </button>
           </div>
-
-
         </div>
     </Layout >
   )

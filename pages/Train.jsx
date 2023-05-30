@@ -224,9 +224,13 @@ const Train = () => {
 
 
         const msi = magicSpellImage.find((e) => e.name == value.target.value);
-        console.log("Image: " + msi.image);
-        setMagicSpellImg(msi.image);
-        
+        if (msi) {
+            console.log("Image: " + msi.image);
+            setMagicSpellImg(msi.image);    
+        } else {
+            console.log("Image not found!");
+            setMagicSpellImg("/harrypotter/Blank.png");    
+        }
     }
 
 

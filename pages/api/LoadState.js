@@ -23,8 +23,8 @@ export default async function handler(req, res) {
             const iotUser = process.env.IOT_USER || "env var IOT_USER not set";
             const iotPassword = process.env.IOT_PASSWORD || "env var IOT_PASSWORD not set";
           
-            // NodeRed Url as REST-API Interface - if source == "NodeRed"
-            const nodeRedUrl = process.env.NODE_RED_URL || 'env var NODE_RED_URL not set';
+            // REST Url as REST-API Interface - if source == "Rest-API"
+            const restUrl = process.env.REST_URL || 'env var REST_URL not set';
            
             // WML Setup - if source == "WML"
             const cloudApiKey = process.env.CLOUD_API_KEY || 'env var CLOUD_API_KEY not set';
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                 cloudApiKey: cloudApiKey,
                 cloudRegion: cloudRegion,
                 deploymentId: deploymentId,
-                nodeRedUrl: nodeRedUrl,
+                restUrl: restUrl,
                 deviceName: deviceName,
                 sendOrientation: sendOrientation
               }
