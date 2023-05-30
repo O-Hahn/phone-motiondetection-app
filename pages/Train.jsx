@@ -6,20 +6,49 @@ const Train = () => {
 
     const [recording, setRecording] = useState(false);
     const [motionset, setMotionset] = useState("");
+    const [magicspell, setMagicSpell] = useState("Aguamenti");
+    const [magicSpellImg, setMagicSpellImg] = useState("/harrypotter/Aguamenti.png");
     const [key, setKey] = useState("0");   
     const [delay, setDelay] = useState(100);
     const [dataObj, setDataObj] = useState({dataArray: []});
     const [sendOrientation, setSendOrientation] = useState(false);
     const [appState, setAppState] = useState({});
 
+    let mode = appState.appMode == "Harry Potter";
+    let magicSpellImage = [
+        {id: "1", name: "Aguamenti", image: "/harrypotter/Aguamenti.png"},
+        {id: "2", name: "Alohomora", image: "/harrypotter/Alohomora.png"},
+        {id: "3", name: "Aparecium", image: "/harrypotter/Aparecium.png"},
+        {id: "4", name: "Arresto Momentum", image: "/harrypotter/Arresto Momentum.png"},
+        {id: "5", name: "Ascendio ", image: "/harrypotter/Ascendio .png"},
+        {id: "6", name: "Descendo", image: "/harrypotter/Descendo.png"},
+        {id: "7", name: "Finite Incantatem", image: "/harrypotter/Finite Incantatem.png"},
+        {id: "8", name: "Herbivicus", image: "/harrypotter/Herbivicus.png"},
+        {id: "9", name: "Incendio", image: "/harrypotter/Incendio.png"},
+        {id: "10", name: "Locomotor", image: "/harrypotter/Locomotor.png"},
+        {id: "11", name: "Meteolohex Recanto", image: "/harrypotter/Meteolohex Recanto.png"},
+        {id: "12", name: "Nox Lumos ", image: "/harrypotter/Nox Lumos .png"},
+        {id: "13", name: "Oppungno", image: "/harrypotter/Oppungno.png"},
+        {id: "14", name: "Reparo", image: "/harrypotter/Reparo.png"},
+        {id: "15", name: "Revelio", image: "/harrypotter/Revelio.png"},
+        {id: "16", name: "Silencio", image: "/harrypotter/Silencio.png"},
+        {id: "17", name: "Specialis Revelio", image: "/harrypotter/Specialis Revelio.png"},
+        {id: "18", name: "Stupor", image: "/harrypotter/Stupor.png"},
+        {id: "19", name: "Tarantallegra", image: "/harrypotter/Tarantallegra.png"},
+        {id: "20", name: "Wingardium Leviosa", image: "/harrypotter/Wingardium Leviosa.png"}
+   ]
+
+
     const handleAcceleration = (event) => {
         console.log("Handle acceleration")
 //        console.log(event);
         let now = new Date();
+        let figure = appState.appMode == "Harry Potter" ? magicspell : key;
+
         if(recording) {
             var data = {
                 device: appState.deviceName,
-                figure: key,
+                figure: figure,
                 motionset: motionset,
                 date: now.toISOString(),
                 timestamp: now.getTime(),
@@ -183,7 +212,19 @@ const Train = () => {
     const onFigureChange = (value) => {
         console.log('OnFigureChange:' + value)
         setKey(value)
-      }
+    }
+
+    const onMagicSpellChange = (value) => {
+        console.log('OnMagicSpellChange:' + value.target.value)
+        setMagicSpell(value.target.value)
+
+
+        const msi = magicSpellImage.find((e) => e.name == value.target.value);
+        console.log("Image: " + msi.image);
+        setMagicSpellImg(msi.image);
+        
+    }
+
 
     return (
         <Layout  >
@@ -217,8 +258,30 @@ const Train = () => {
                 />
 
             </div>
+
+            {mode ? (
+                <div className="flex mt-2 items-center">
+                    <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Magic Spell:</div> 
+                    <div className="mb-3 xl:w-96">
+                    <select onChange={onMagicSpellChange} className="form-select appearance-none
+                        block w-full px-3 py-1.5 text-base font-normal w-64
+                        text-gray-700 bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300 rounded transition ease-in-out 
+                        m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Figure to train">
+                        { magicSpellImage.map(magicspell => {
+                            return (
+                                <option key= {magicspell.id} value={magicspell.name}>
+                                    {magicspell.name}
+                                </option>
+                            )
+                            })
+                        }
+                    </select>
+                </div>   
+            </div>
+            ) : (
             <div className="flex mt-2 items-center">
-                <div className="w-2/6 text-right pr-5 text-gray-600">Figure:</div> 
+                <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Figure:</div> 
                 <div className="mb-3 xl:w-96">
                 <select onChange={(e) => onFigureChange(e.target.value)} className="form-select appearance-none
                     block w-full px-3 py-1.5 text-base font-normal w-64
@@ -238,6 +301,21 @@ const Train = () => {
                 </select>
                 </div>
             </div>
+            )}           
+
+            { mode && (
+                <div>
+                <div className="flex mt-2">
+                    <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Image:</div>
+                    <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 border-inherit 
+                        border-2 bg-black hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2 px-4 focus:mx-0 
+                        focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">
+                            <Image src={magicSpellImg} alt={magicSpellImg} width={290} height={224} />
+                    </div>
+                </div>
+            </div>       
+        )}
+
 
             {recording ? (
                 <div className="flex mt-2">
@@ -308,3 +386,25 @@ const Train = () => {
 }
 
 export default Train;
+
+                    // <option value="Aguamenti">Aguamenti</option>
+                    // <option value="Alohomora">Alohomora</option>
+                    // <option value="Aparecium">Aparecium</option>
+                    // <option value="Arresto Momentum">Arresto Momentum</option>
+                    // <option value="Ascendio">Ascendio</option>
+                    // <option value="Descendo">Descendo</option>
+                    // <option value="Finite Incantatem">Finite Incantatem</option>
+                    // <option value="Herbivicus">Herbivicus</option>
+                    // <option value="Incendio">Incendio</option>
+                    // <option value="Locomotor">Locomotor</option>
+                    // <option value="Meteorlohex Recanto">Meteorlohex Recanto</option>
+                    // <option value="Nox Lumos">Nox Lumos</option>
+                    // <option value="Oppungno">Oppungno</option>
+                    // <option value="Reparo">Reparo</option>
+                    // <option value="Revelio">Revelio</option>
+                    // <option value="Silencio">Silencio</option>
+                    // <option value="Specialis Revelio">Specialis Revelio</option>
+                    // <option value="Stupor">Stupor</option>
+                    // <option value="Tarantallegra">Tarantallegra</option>
+                    // <option value="Wingardium Leviosa">Wingardium Leviosa</option>
+

@@ -19,7 +19,8 @@ async function sendTrainCloudant(req, res) {
     try {
         console.log("TrainCloudant.sendTrainCloudant()");
         let data = JSON.parse(req.body);
-        let url = data.url + "/new_train";
+        // let url = data.url + "/new_train";
+        let url = data.url;
         console.log("train CloudantDB req url = " + url);
         console.log(data);
 

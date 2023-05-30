@@ -18,6 +18,7 @@ export default function Home() {
   const [cloudantHost, setCloudantHost] = useState("<cloudant host>");
   const [cloudantUserName, setCloudantUserName] = useState("<cloudant user>");
   const [cloudantPassword, setCloudantPassword] = useState("<cloudant password>");
+  const [cloudantDB, setCloudantDB] = useState("<cloudant DB>");
   const [cloudantUrl, setCloudantUrl] = useState("<cloudant url>");
 
   // IoT Setup - if destination == "IoT"
@@ -62,7 +63,7 @@ export default function Home() {
 
   useEffect(() => {
 
-    let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost;
+    let cloudantUrl =  "https://" + cloudantUserName + ":" + cloudantPassword + "@" + cloudantHost + "/" + cloudantDB;
     setCloudantUrl(cloudantUrl);
     
     let appState = {
@@ -75,7 +76,8 @@ export default function Home() {
       iotTopic: iotTopic,
       cloudantHost: cloudantHost, 
       cloudantUserName: cloudantUserName, 
-      cloudantPassword: cloudantPassword, 
+      cloudantPassword: cloudantPassword,
+      cloudantDB: cloudantDB, 
       cloudantUrl: cloudantUrl,
       cloudApiKey: cloudApiKey,
       cloudRegion: cloudRegion,
@@ -89,7 +91,7 @@ export default function Home() {
     console.log("app state written");
 
   //eslint-disable-next-line
-  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
+  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantDB, cloudApiKey, cloudRegion, deploymentId, nodeRedUrl, deviceName, sendOrientation])
 
 
   const setStateFromStateObj = (newState) => {
@@ -107,9 +109,10 @@ export default function Home() {
         console.log("set cloudant host to " + newState.cloudantHost);
         setCloudantUserName(newState.cloudantUserName);
         setCloudantPassword(newState.cloudantPassword);
-      let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost;
-      setCloudantUrl(newCloudantUrl);
-      console.log("set cloudant url to " + newCloudantUrl);
+        setCloudantDB(newState.cloudantDB);
+        let newCloudantUrl =  "https://" + newState.cloudantUserName + ":" + newState.cloudantPassword + "@" + newState.cloudantHost + "/" + newState.cloudantDB;
+        setCloudantUrl(newCloudantUrl);
+        console.log("set cloudant url to " + newCloudantUrl);
 
       // IoT
         setIotServer(newState.iotServer);
@@ -268,6 +271,15 @@ export default function Home() {
                 name="cloudantPassword"
                 value={cloudantPassword}
                 onChange={(e) => setCloudantPassword(e.target.value)} />
+            </div>
+            <div className="flex mt-2 items-center">
+              <div className="w-2/6 text-right pr-5 text-gray-600">Database:</div>
+              <input
+                className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                type="search"
+                name="cloudantDB"
+                value={cloudantDB}
+                onChange={(e) => setCloudantDB(e.target.value)} />
             </div>
             <div className="flex mt-2 items-center">
               <div className="w-2/6 text-right pr-5 text-gray-600">Cloudant URL:</div>

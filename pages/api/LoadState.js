@@ -14,6 +14,7 @@ export default async function handler(req, res) {
             const cloudantHost = process.env.CLOUDANT_HOST_URL || "env var CLOUDANT_HOST_URL not set";
             const cloudantUserName = process.env.CLOUDANT_USER || "env var CLOUDANT_USER not set";
             const cloudantPassword = process.env.CLOUDANT_PASSWORD || "env var CLOUDANT_PASSWORD not set";
+            const cloudantDB = process.env.CLOUDANT_DB || "env var CLOUDANT_DB not set";
             const cloudantUrl = "";
           
             // IoT Setup - if destination == "IoT"
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
                 cloudantHost: cloudantHost, 
                 cloudantUserName: cloudantUserName, 
                 cloudantPassword: cloudantPassword, 
+                cloudantDB: cloudantDB, 
                 cloudantUrl: cloudantUrl,
                 cloudApiKey: cloudApiKey,
                 cloudRegion: cloudRegion,
