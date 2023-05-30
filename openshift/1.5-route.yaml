@@ -1,13 +1,13 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: phone-md-app-route
-  namespace: phone-md
+  name: phone-md-hp-app-route
+  namespace: phone-md-hp
 spec:
   path: /
   to:
     kind: Service
-    name: phone-md-app-service
+    name: phone-md-hp-app-service
   port:
     targetPort: 8080-tcp
   tls:

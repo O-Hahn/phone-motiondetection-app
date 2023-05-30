@@ -1,11 +1,11 @@
-oc delete project phone-md
+oc delete project phone-md-hp
 sleep 20
-oc new-project phone-md
+oc new-project phone-md-hp
 
-oc create configmap phone-md-app-config --from-file=.env.local 
+oc create configmap phone-md-hp-app-config --from-file=../.env.local 
 
 oc apply -k . 
 
-oc set env --from=configmap/phone-md-config deploymentconfig/phone-md-app 
+oc set env --from=configmap/phone-md-hp-app-config deploymentconfig/phone-md-hp-app 
 
-oc start-build phone-md-app
+oc start-build phone-md-hp-app

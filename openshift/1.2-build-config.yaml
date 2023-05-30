@@ -1,14 +1,15 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: phone-md-app
+  name: phone-md-hp-app
   labels:
-    app: phone-md-app
+    app: phone-md-hp-app
 spec:
   source:
     type: Git
     git:
       uri: https://github.com/O-Hahn/phone-motiondetection-app
+      ref: v3-harrypotter
   strategy:
     type: Docker                      
     dockerStrategy:
@@ -16,4 +17,4 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: phone-md-app:latest
+      name: phone-md-hp-app:latest

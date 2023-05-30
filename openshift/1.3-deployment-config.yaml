@@ -4,17 +4,17 @@ metadata:
   annotations:
     app.openshift.io/route-disabled: 'false'
     openshift.io/generated-by: OpenShiftWebConsole
-  name: phone-md-app
-  namespace: phone-md
+  name: phone-md-hp-app
+  namespace: phone-md-hp
   labels:
-    app: phone-md-app
-    app.kubernetes.io/component: phone-md-app
-    app.kubernetes.io/instance: phone-md-app
-    app.kubernetes.io/name: phone-md-app
-    app.kubernetes.io/part-of: phone-md-app
+    app: phone-md-hp-app
+    app.kubernetes.io/component: phone-md-hp-app
+    app.kubernetes.io/instance: phone-md-hp-app
+    app.kubernetes.io/name: phone-md-hp-app
+    app.kubernetes.io/part-of: phone-md-hp-app
     app.openshift.io/runtime: 3scale
-    app.openshift.io/runtime-namespace: phone-md-app
-    app.openshift.io/runtime-version: phone-md-app
+    app.openshift.io/runtime-namespace: phone-md-hp-app
+    app.openshift.io/runtime-version: phone-md-hp-app
 spec:
   strategy:
     type: Rolling
@@ -31,34 +31,53 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - phone-md-app
+          - phone-md-hp-app
         from:
           kind: ImageStreamTag
-          namespace: phone-md
-          name: 'phone-md-app:latest'
+          namespace: phone-md-hp
+          name: 'phone-md-hp-app:latest'
     - type: ConfigChange
   replicas: 1
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: phone-md-app
-    deploymentconfig: phone-md-app
+    app: phone-md-hp-app
+    deploymentconfig: phone-md-hp-app
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: phone-md-app
-        deploymentconfig: phone-md-app
+        app: phone-md-hp-app
+        deploymentconfig: phone-md-hp-app
     spec:
+      volumes:
+        - name: phone-md-hp-app-config
+          configMap:
+            name: phone-md-hp-app-config
+            items:
+              - key: .env.local
+                path: .env.local
+            defaultMode: 444
       containers:
-        - name: phone-md-app
+        - name: phone-md-hp-app
+          env:
+            - name: _ENV_LOCAL
+              valueFrom:
+                configMapKeyRef:
+                  name: phone-md-hp-app-config
+                  key: .env.local
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: {}
           envFrom:
             - configMapRef:
-              name: phone-md-app-config
+                name: phone-md-hp-app-config
+          volumeMounts:
+            - name: phone-md-hp-app-config
+              readOnly: true
+              mountPath: /app/.env.local
+              subPath: .env.local
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

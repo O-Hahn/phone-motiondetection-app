@@ -1,5 +1,5 @@
 kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
-  name: phone-md-app
-  namespace: phone-md
+  name: phone-md-hp-app
+  namespace: phone-md-hp

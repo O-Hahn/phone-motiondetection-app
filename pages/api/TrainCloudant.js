@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         }
 
         default: {
-            res.status(405).json({ eror: 'method not supported ' + req.method })
+            res.status(405).json({ error: 'method not supported ' + req.method })
         }
 
     }
