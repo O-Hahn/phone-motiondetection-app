@@ -1,9 +1,9 @@
 export default async function handler(req, res) {
-    console.log("ScoreNR.handler");
+    console.log("ScoreRest.handler");
     console.log(req);
     switch (req.method) {
         case 'POST': {
-            await sendScoreNR(req, res);
+            await sendScoreRest(req, res);
             return;
         }
 
@@ -15,27 +15,34 @@ export default async function handler(req, res) {
 
 }
 
-async function sendScoreNR(req, res) {
+async function sendScoreRest(req, res) {
     try {
-        console.log("ScoreNR.sendScoreNR()");
+        console.log("ScoreRest.sendScoreRest()");
         let data = JSON.parse(req.body);
         let bdy = {
             input_data: [
                 {
-                    values: [...data.dataObj.dataArray],
+                    values: {
+                        dataArray: [...data.dataObj.dataArray],
+                    }
                 }
             ],
         };
+
         const util = require('util');
         console.log(util.inspect(bdy, false, null, true /* enable colors */))
         
         let url = data.url;
-        console.log("score NR req url = " + url);
+        console.log("score Rest req url = " + url);
 
         let rest = null;
         await fetch(url, {
             method: 'POST',
-            body: bdy,
+            headers: {
+                'Content-Type': "application/json",
+            },
+
+            body: JSON.stringify(bdy),
         }).then(response => response.text()).then(dat => rest = JSON.parse(dat));
         //console.log(rest);
         let pred = null;
@@ -53,7 +60,7 @@ async function sendScoreNR(req, res) {
         return res.json(result);    
         
     } catch (error) {
-        console.log("ScoreNR.sendScoreNR() error: " + error);
+        console.log("ScoreRest.sendScoreRest() error: " + error);
         return res.json({
             message: new Error(error).message,
             success: false,

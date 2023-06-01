@@ -145,26 +145,36 @@ const Score = () => {
         console.log(k);
         setKey(k);
     };
-    
-    // const handleSend = async () => {
-    //     console.log("Send");
-    //     let req = {
-    //         url: appState.nodeRedUrl,
-    //         dataObj: dataObj,
-    //     }
-    //     let response = await fetch('/api/ScoreNR', {
-    //         method: 'POST',
-    //         body: JSON.stringify(req),
-    //     });
 
-    // };
 
     const handleSend = async () => {
+        if (appState.source == "1") {
+            handleSendWML();
+        } else {
+            handleSendREST();
+        }
+    };
+
+    const handleSendREST = async () => {
+        console.log("Send via REST");
+        let req = {
+            url: appState.restUrl,
+            dataObj: dataObj,
+        }
+        let response = await fetch('/api/ScoreREST', {
+            method: 'POST',
+            body: JSON.stringify(req),
+        })  
+    };
+
+    const handleSendWML = async () => {
         console.log("Send");
         let req = {
+            appMode: appState.appMode,
             cloudApiKey: appState.cloudApiKey,
             cloudRegion: appState.cloudRegion,
             deploymentId: appState.deploymentId,
+            deploymentIdHP: appState.deploymentIdHP,
             dataObj: dataObj,
         }
         let rsp = {};
@@ -177,8 +187,13 @@ const Score = () => {
             setMagicSpell(rsp.pred);
 
             const msi = magicSpellImage.find((e) => e.name == rsp.pred);
-            console.log("Image: " + msi.image);
-            setMagicSpellImg(msi.image);
+            if (msi) {
+                setMagicSpellImg(msi.image);
+                console.log("Image: " + msi.image);
+            } else {
+                setdigitImg("/harrypotter/Blank.png");
+            }
+
         } else {
             setPred(rsp.pred);
 
@@ -200,7 +215,18 @@ const Score = () => {
             console.log(appState);
             setAppState(stateObj);
             setSendOrientation(stateObj.sendOrientation);
-            let url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentId + '/predictions?version=2021-01-02';
+            let url = "";
+            if (stateObj.source == "1") {
+                if (stateObj.appMode == "Harry Potter") {
+                    url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentIdHP + '/predictions?version=2021-01-02';
+                } else {
+                    url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentId + '/predictions?version=2021-01-02';
+                }    
+            } else {
+                url = stateObj.restUrl;
+            }
+            console.log("Model Url: "+ url);
+
             setMlUrl(url);
         }
    
@@ -236,7 +262,7 @@ const Score = () => {
             <h1 className="text-lg font-bold mt-4 ml-2 border-b-2">Scoring</h1>
             <div className="mt-4 w-full">
                 <div className="flex">
-                    <div className="w-2/6 text-right pr-5 text-gray-600">Machine Learning URL:</div>
+                    <div className="w-2/6 text-right pr-5 text-gray-600">Model URL:</div>
                     <div className="w-4/6 text-sm  overflow-x-auto">{mlUrl}</div>
                 </div>
 

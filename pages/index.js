@@ -34,6 +34,7 @@ export default function Home() {
   const [cloudApiKey, setCloudApiKey] = useState('<IBM cloud api key>');
   const [cloudRegion, setCloudRegion] = useState('<IBM cloud region>');
   const [deploymentId, setDeploymentId] = useState('<IBM cloud WML deployment id>');
+  const [deploymentIdHP, setDeploymentIdHP] = useState('<IBM cloud WML deployment id Harry Potter>');
 
   // defaults 
   const [deviceName, setDeviceName] = useState("phone");
@@ -83,6 +84,7 @@ export default function Home() {
       cloudApiKey: cloudApiKey,
       cloudRegion: cloudRegion,
       deploymentId: deploymentId,
+      deploymentIdHP: deploymentIdHP,
       restUrl: restUrl,
       deviceName: deviceName,
       sendOrientation: sendOrientation
@@ -92,7 +94,7 @@ export default function Home() {
     console.log("app state written");
 
   //eslint-disable-next-line
-  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantUrl, cloudantDB, cloudApiKey, cloudRegion, deploymentId, restUrl, deviceName, sendOrientation])
+  }, [appMode, destination, source, iotServer, iotUser, iotPassword, iotTopic, cloudantHost, cloudantUserName, cloudantPassword, cloudantUrl, cloudantDB, cloudApiKey, cloudRegion, deploymentId, deploymentIdHP, restUrl, deviceName, sendOrientation])
 
 
   const setStateFromStateObj = (newState) => {
@@ -127,6 +129,7 @@ export default function Home() {
         setCloudApiKey(newState.cloudApiKey);
         setCloudRegion(newState.cloudRegion);
         setDeploymentId(newState.deploymentId);
+        setDeploymentIdHP(newState.deploymentIdHP);
 
       // Rest 
         setRestUrl(newState.restUrl);
@@ -221,7 +224,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex mt-2 items-center">    
-            <div className="w-2/6 text-right pr-5 text-gray-600">Source Environment:</div>      
+            <div className="w-2/6 text-right pr-5 text-gray-600">Model Environment:</div>      
             <div className="mb-3 xl:w-96">
               <select value={source} onChange={(e) => onSourceChange(e.target.value)} className="form-select appearance-none
                 block
@@ -367,6 +370,15 @@ export default function Home() {
                   name="deploymentId"
                   value={deploymentId}
                   onChange={(e) => setDeploymentId(e.target.value)} />
+              </div>
+              <div className="flex mt-2 items-center">
+                <div className="w-2/6 text-right pr-5 text-gray-600">Deployment ID Harry Potter</div>
+                <input
+                  className="w-4/6 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                  type="search"
+                  name="deploymentIdHP"
+                  value={deploymentIdHP}
+                  onChange={(e) => setDeploymentIdHP(e.target.value)} />
               </div></>
             )}
             {source == "2" && (

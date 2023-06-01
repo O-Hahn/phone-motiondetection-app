@@ -47,7 +47,13 @@ async function sendScoreML(req, res) {
         };
         console.log(util.inspect(bdy, false, null, true /* enable colors */))
         
-        let url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentId + '/predictions?version=2021-01-02';
+        let url = "";
+
+        if (data.appMode =="Harry Potter") {
+            url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentIdHP + '/predictions?version=2021-01-02';
+        } else {
+            url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentId + '/predictions?version=2021-01-02';
+        }
         console.log("score ML req url = " + url);
 
         let rest = null;
@@ -84,4 +90,3 @@ async function sendScoreML(req, res) {
         });
     }
 }
-

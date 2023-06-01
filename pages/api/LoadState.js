@@ -30,7 +30,8 @@ export default async function handler(req, res) {
             const cloudApiKey = process.env.CLOUD_API_KEY || 'env var CLOUD_API_KEY not set';
             const cloudRegion = process.env.CLOUD_REGION || 'env var CLOUD_REGION not set';
             const deploymentId = process.env.WML_DEPLOYMENT_ID || 'env var WML_DEPLOYMENT_ID not set';
-          
+            const deploymentIdHP = process.env.WML_DEPLOYMENT_ID_HP || 'env var WML_DEPLOYMENT_ID not set';
+
             // defaults 
             const deviceName = process.env.DEVICE_NAME || "phone";
             const sendOrientation = process.env.ORIENTATION || false;
@@ -51,6 +52,7 @@ export default async function handler(req, res) {
                 cloudApiKey: cloudApiKey,
                 cloudRegion: cloudRegion,
                 deploymentId: deploymentId,
+                deploymentIdHP: deploymentIdHP,
                 restUrl: restUrl,
                 deviceName: deviceName,
                 sendOrientation: sendOrientation
