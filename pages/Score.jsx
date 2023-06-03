@@ -333,7 +333,7 @@ const Score = () => {
                             <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Magic Spell Result:</div>
                             <div className="w-64 text-2xl text-purple-600 text-lg rounded border border-gray-100 
                                 border-inherit border-2 bg-orange-300 hover:border-blue-100 mx-px hover:mx-0 hover:border-2 
-                                py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{pred}</div>
+                                py-2 px-4 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8">{magicspell}</div>
                         </div>
                         <div className="flex mt-2">
                             <div className="w-2/6 text-2xl text-right pr-5 text-purple-600">Image:</div>
