@@ -65,7 +65,9 @@ async function sendScoreML(req, res) {
             },
             body: JSON.stringify(bdy),
         }).then(response => response.text()).then(dat => rest = JSON.parse(dat));
+
         console.log(util.inspect(rest, false, null, true /* enable colors */))
+        
         let pred = null;
         if (rest && rest.predictions && rest.predictions[0]) {
             pred = "" + rest.predictions[0].values[0];
