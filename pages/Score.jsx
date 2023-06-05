@@ -46,7 +46,7 @@ const Score = () => {
     {id: "2", name: "two", image: "/digits/two.png"},
     {id: "3", name: "three", image: "/digits/three.png"},
     {id: "4", name: "four", image: "/digits/four.png"},
-    {id: "5", name: "fife", image: "/digits/five.png"},
+    {id: "5", name: "five", image: "/digits/five.png"},
     {id: "6", name: "six", image: "/digits/six.png"},
     {id: "7", name: "seven", image: "/digits/seven.png"},
     {id: "8", name: "eight", image: "/digits/eight.png"},
