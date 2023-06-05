@@ -157,14 +157,39 @@ const Score = () => {
 
     const handleSendREST = async () => {
         console.log("Send via REST");
+        
         let req = {
             url: appState.restUrl,
             dataObj: dataObj,
         }
-        let response = await fetch('/api/ScoreREST', {
+        await fetch('/api/ScoreREST', {
             method: 'POST',
             body: JSON.stringify(req),
-        })  
+        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+
+        console.log("Rest response:" + rsp);
+        if (mode) {
+            setMagicSpell(rsp.pred);
+
+            const msi = magicSpellImage.find((e) => e.name == rsp.pred);
+            if (msi) {
+                setMagicSpellImg(msi.image);
+                console.log("Image: " + msi.image);
+            } else {
+                setdigitImg("/harrypotter/Blank.png");
+            }
+
+        } else {
+            setPred(rsp.pred);
+
+            const dimg = digitImage.find((e) => e.id == rsp.pred);
+            if (dimg) {
+                console.log("Image: " + dimg.image);
+                setdigitImg(dimg.image);    
+            } else {
+                setdigitImg("/digits/blank.png");
+            }
+        }  
     };
 
     const handleSendWML = async () => {
@@ -182,7 +207,9 @@ const Score = () => {
             method: 'POST',
             body: JSON.stringify(req),
         }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
-        console.log(rsp);
+        
+        console.log("WML Response:" + rsp);
+
         if (mode) {
             setMagicSpell(rsp.pred);
 
