@@ -165,9 +165,12 @@ const Score = () => {
         await fetch('/api/ScoreREST', {
             method: 'POST',
             body: JSON.stringify(req),
-        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat)).then(rsp => handleOutput(rsp));
+    };
 
-        console.log("Rest response:" + rsp);
+    const handleOutput = async (rsp) => {
+        console.log("Response:" + rsp);
+
         if (mode) {
             setMagicSpell(rsp.pred);
 
@@ -189,8 +192,9 @@ const Score = () => {
             } else {
                 setdigitImg("/digits/blank.png");
             }
-        }  
-    };
+        }
+    }
+
 
     const handleSendWML = async () => {
         console.log("Send");
@@ -206,32 +210,8 @@ const Score = () => {
         await fetch('/api/ScoreML', {
             method: 'POST',
             body: JSON.stringify(req),
-        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat));
+        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat)).then(rsp => handleOutput(rsp));
         
-        console.log("WML Response:" + rsp);
-
-        if (mode) {
-            setMagicSpell(rsp.pred);
-
-            const msi = magicSpellImage.find((e) => e.name == rsp.pred);
-            if (msi) {
-                setMagicSpellImg(msi.image);
-                console.log("Image: " + msi.image);
-            } else {
-                setMagicSpellImg("/harrypotter/Blank.png");
-            }
-
-        } else {
-            setPred(rsp.pred);
-
-            const dimg = digitImage.find((e) => e.id == rsp.pred);
-            if (dimg) {
-                console.log("Image: " + dimg.image);
-                setdigitImg(dimg.image);    
-            } else {
-                setdigitImg("/digits/blank.png");
-            }
-        }
     };
 
     useEffect(() => {
