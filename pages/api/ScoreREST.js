@@ -45,12 +45,15 @@ async function sendScoreRest(req, res) {
             body: JSON.stringify(bdy),
         }).then(response => response.text()).then(dat => rest = JSON.parse(dat));
         //console.log(rest);
+
         let pred = null;
-        if (rest && rest.data && rest.data.predictions) {
-            pred = rest.data.predictions[0].values[0];
+        if (rest && rest.predictions && rest.predictions[0]) {
+            pred = "" + rest.predictions[0].values[0];
+        } else if (rest && rest.errors){ 
+            pred = rest.status_code + ": " + rest.errors[0].code + ", " + rest.errors[0].message;
+        } else {
+            pred = "-1";
         }
-
-
 
         let result = {
             success: true,
