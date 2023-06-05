@@ -165,16 +165,20 @@ const Score = () => {
         await fetch('/api/ScoreREST', {
             method: 'POST',
             body: JSON.stringify(req),
-        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat)).then(rsp => handleOutput(rsp));
+        }).then(response => response.text()).then(dat => handleOutput(dat));
     };
 
-    const handleOutput = async (rsp) => {
-        console.log("Response:" + rsp);
+    const handleOutput = async (dat) => {
+        let rsp = JSON.parse(dat);
+
+        let pred = rsp ? rsp.pred : "Not found";
+
+        console.log("Response:" + pred);
 
         if (mode) {
-            setMagicSpell(rsp.pred);
+            setMagicSpell(pred);
 
-            const msi = magicSpellImage.find((e) => e.name == rsp.pred);
+            const msi = magicSpellImage.find((e) => e.name == pred);
             if (msi) {
                 setMagicSpellImg(msi.image);
                 console.log("Image: " + msi.image);
@@ -183,9 +187,9 @@ const Score = () => {
             }
 
         } else {
-            setPred(rsp.pred);
+            setPred(pred);
 
-            const dimg = digitImage.find((e) => e.id == rsp.pred);
+            const dimg = digitImage.find((e) => e.id == pred);
             if (dimg) {
                 console.log("Image: " + dimg.image);
                 setdigitImg(dimg.image);    
@@ -210,7 +214,7 @@ const Score = () => {
         await fetch('/api/ScoreML', {
             method: 'POST',
             body: JSON.stringify(req),
-        }).then(response => response.text()).then(dat => rsp = JSON.parse(dat)).then(rsp => handleOutput(rsp));
+        }).then(response => response.text()).then(dat => handleOutput(dat));
         
     };
 
