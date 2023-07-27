@@ -148,7 +148,7 @@ const Score = () => {
 
 
     const handleSend = async () => {
-        if (appState.source == "1") {
+        if (appState.scoringEnv == "WML") {
             handleSendWML();
         } else {
             handleSendREST();
@@ -201,11 +201,14 @@ const Score = () => {
 
 
     const handleSendWML = async () => {
-        console.log("Send");
+        console.log("Send via WML");
         let req = {
             appMode: appState.appMode,
+            modelEnv: appState.modelEnv,
             cloudApiKey: appState.cloudApiKey,
             cloudRegion: appState.cloudRegion,
+            qDeploymentId: appState.qDeploymentId,
+            qDeploymentIdHP: appState.qDeploymentIdHP,
             deploymentId: appState.deploymentId,
             deploymentIdHP: appState.deploymentIdHP,
             dataObj: dataObj,
@@ -223,15 +226,28 @@ const Score = () => {
     
         if (appStateJson) {            
             let stateObj = JSON.parse(appStateJson);
-            console.log(appState);
+
             setAppState(stateObj);
             setSendOrientation(stateObj.sendOrientation);
             let url = "";
-            if (stateObj.source == "1") {
+            console.log(stateObj);
+
+            // scoring Env WML or REST
+            if (stateObj.scoringEnv == "WML") {
+                // AppMode Harry Potter or Digit Classification
                 if (stateObj.appMode == "Harry Potter") {
-                    url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentIdHP + '/predictions?version=2021-01-02';
+                    // modelEnv is CLASSIC or IBM-Q
+                    if (stateObj.modelEnv == "CLASSIC") {
+                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentIdHP + '/predictions?version=2021-01-02';
+                    } else {
+                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.qDeploymentIdHP + '/predictions?version=2021-01-02';
+                    }
                 } else {
-                    url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentId + '/predictions?version=2021-01-02';
+                    if (stateObj.modelEnv == "CLASSIC") {
+                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentId + '/predictions?version=2021-01-02';
+                    } else {
+                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.qDploymentId + '/predictions?version=2021-01-02';
+                    }
                 }    
             } else {
                 url = stateObj.restUrl;
@@ -265,31 +281,13 @@ const Score = () => {
             }
         };
         // eslint-disable-next-line
-    }, [recording, dataObj, sendOrientation]);
+    }, [recording, dataObj, sendOrientation, mlUrl ]);
 
 
     return (
         <Layout  >
             <h1 className="text-lg font-bold mt-4 ml-2 border-b-2">Scoring</h1>
             <div className="mt-4 w-full">
-                <div className="flex">
-                    <div className="w-2/6 text-right pr-5 text-gray-600">Model URL:</div>
-                    <div className="w-4/6 text-sm  overflow-x-auto">{mlUrl}</div>
-                </div>
-
-                <div className="flex mt-2 items-center">
-                    <div className="w-2/6 text-right pr-5 text-gray-600">Delay:</div>
-                    <input 
-                        className="w-64 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px 
-                        hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
-                        type="text"
-                        name="delay" 
-                        placeholder="delay in ms"
-                        value={delay}
-                        onChange={e => {setDelay(e.target.value)}}
-                    />
-
-                </div>
 
                 {recording ? (
                     <div className="flex mt-2">
@@ -390,6 +388,24 @@ const Score = () => {
                         </div>
                     </div>
                 )}
+
+                <div className="flex mt-2 items-center">
+                    <div className="w-2/6 text-right pr-5 text-gray-600">Delay:</div>
+                    <input 
+                        className="w-64 rounded border border-gray-100 border-inherit border-2 hover:border-blue-100 mx-px 
+                        hover:mx-0 hover:border-2 py-2.5 px-2 focus:mx-0 focus:border-2 focus:border-blue-100 focus:outline-0 pr-8"
+                        type="text"
+                        name="delay" 
+                        placeholder="delay in ms"
+                        value={delay}
+                        onChange={e => {setDelay(e.target.value)}}
+                    />
+                </div>
+
+                <div className="flex">
+                    <div className="w-2/6 text-right pr-5 text-gray-600">Model URL:</div>
+                    <div className="w-4/6 text-sm  overflow-x-auto">{mlUrl}</div>
+                </div>
 
             </div>
         </Layout >
