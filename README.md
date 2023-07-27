@@ -17,7 +17,7 @@ If you dont have an existing environment - the following steps are needed to cre
 - deploy the app from this repo (follow the steps below)
 - Call the deployed phone-app with your handy, provide your credentials to the cloudant and train your data
 - import the Jupyter Notebook and run the Notebook - apply your credentials  
-- copy the endpoint from the deployed model function into the settings of the phone-app 
+- copy the endpoint from the deployed model function into the settings of the phone-app (.env.local file)
 - check if the detection works in the phone app :-) 
 
 The runtime (IKS or OpenShift) must be a payed version because the need of secured HTTPS endpoints. These are needed because of the security aspects to get access to the sensor data of the phone-web-app. 
@@ -64,29 +64,53 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 The local version could not be used for the app deployment because it is not a HTTPS endpoint - and this is needed for the securtiy reasons on the phone to get access to the sensor data. 
 
 ## Edit / Create .env.local file
-Create / Edit the .env.local file with the necessary Cloud/API/Keys/URLs to the deployed environment of your setup. This helps to use the WebApp without editing the settings because they are injected as default. 
-Possible settings for the .env.local file: 
+Create / Edit the .env.local file with the necessary Cloud/API/Keys/URLs to the deployed environment of your setup. This helps to use the WebApp without editing the settings because they are injected as default. Use the env.local.template file for possible inputs to .env.local and copy it.
+
+### Edit the environment 
 ```bash
+cp .template.env.local .env.local 
+```
+change the entries in the .env.local 
+
+
+Settings for the .env.local could be: 
+
+```bash
+APP_MODE=Harry Potter
+
+APP_TRAIN_ENV=CLOUDANT
+
+CLOUDANT_HOST_URL=<url to cloudant endpoint without https://>
+CLOUDANT_USER=<cloudant username>
+CLOUDANT_PASSWORD=<cloudant password>
+CLOUDANT_DB=<cloudant db name to store motions>
+
+IOT_SERVER=<wss://+url to iot server>
+IOT_TOPIC=phone-motion
+IOT_USER=<iot username>
+IOT_PASSWORD=<iot password>
+
+APP_SCORING_ENV=WML
+APP_MODEL_ENV=CLASSIC
+
+CLOUD_API_KEY=<cloud api key>
+CLOUD_REGION=eu-de
+WML_SPACE_ID=<wml space id>
+WML_Q_DEPLOYMENT_ID=<wml deployment id>
+WML_Q_DEPLOYMENT_ID_HP=<wml deployment id>
+WML_DEPLOYMENT_ID=<wml deployment id>
+WML_DEPLOYMENT_ID_HP=<wml deployment id>
+REST_URL=<https://...>
+
 SEND_ORIENTATION=false
 DEVICE_NAME=iPhone
-CLOUD_API_KEY=xx
-CLOUD_REGION=us-south
-WML_DEPLOYMENT_ID=xx
-CLOUDANT_HOST_URL=xxx
-CLOUDANT_USER=xx
-CLOUDANT_PASSWORD=xx
-NODE_RED_URL=xx
-IOT_SERVER=wss://wss-mqtt.xxxxx.eu-de.containers.appdomain.cloud
-IOT_TOPIC=phone-motion
-IOT_USER=xxx
-IOT_PASSWORD=xxx
 ```
 
 ## Deploy build into registry
 If your image is ready - you could store it into the public registry - by tagging and pushing the image. The registry here is based on IBM Cloud - de.icr.io is the endpoint for the public registry located in germany. A repo (phone-md) must be created in the cloud. A use of dockerhub is also possible. 
 
 ```bash
-docker tag sensor-app:latest de.icr.io/phone-md/phone-md-app:latest
+docker tag phone-md-app:latest de.icr.io/phone-md/phone-md-app:latest
 docker push de.icr.io/phone-md/phone-md-app:latest
 ```
 
@@ -104,10 +128,12 @@ kubectl apply -f kubernetes/1.4-service.yaml
 ## Deploy the App from the Image
 The OpenShift deployment is based on the GIT itself - therefore the image is build and published interally on OpenShift. The Deployment is based on an image-stream from the GIT Repo and is enhanced with a service and route definition. 
 
-Run doit.sh for deploying Application into OpenShift Environment automatically 
+Run create.sh for deploying this application into OpenShift Environment automatically 
 ```bash
-./doit.sh
+oc login ....
+./create -i phone-md-oh -p phone-md-oh
 ```
+
 
 ### Manuel OpenShift deployment
 

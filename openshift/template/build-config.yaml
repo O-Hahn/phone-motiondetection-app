@@ -1,0 +1,20 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: APP_NAME
+  labels:
+    app: APP_NAME
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/O-Hahn/phone-motiondetection-app'
+      ref: v4-quantum
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+  output:
+    to:
+      kind: ImageStreamTag
+      name: APP_NAME:latest
