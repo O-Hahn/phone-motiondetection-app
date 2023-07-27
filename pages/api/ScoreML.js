@@ -10,9 +10,7 @@ export default async function handler(req, res) {
         default: {
             res.status(405).json({ eror: 'method not supported ' + req.method })
         }
-
     }
-
 }
 
 async function sendScoreML(req, res) {
@@ -49,11 +47,21 @@ async function sendScoreML(req, res) {
         
         let url = "";
 
-        if (data.appMode =="Harry Potter") {
-            url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentIdHP + '/predictions?version=2021-01-02';
+        if (data.appMode == "Harry Potter") {
+            // modelEnv is CLASSIC or IBM-Q
+            if (data.modelEnv == "CLASSIC") {
+                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentIdHP + '/predictions?version=2021-01-02';
+            } else {
+                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.qDeploymentIdHP + '/predictions?version=2021-01-02';
+            }
         } else {
-            url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentId + '/predictions?version=2021-01-02';
-        }
+            if (data.modelEnv == "CLASSIC") {
+                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentId + '/predictions?version=2021-01-02';
+            } else {
+                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.qDploymentId + '/predictions?version=2021-01-02';
+            }
+        }    
+
         console.log("score ML req url = " + url);
 
         let rest = null;

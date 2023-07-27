@@ -17,6 +17,7 @@ const Score = () => {
     const [mlUrl, setMlUrl] = useState("");
 
     let mode = appState.appMode == "Harry Potter";
+
     let magicSpellImage = [
         {id: "1", name: "Aguamenti", image: "/harrypotter/Aguamenti.png"},
         {id: "2", name: "Alohomora", image: "/harrypotter/Alohomora.png"},
@@ -207,6 +208,7 @@ const Score = () => {
             modelEnv: appState.modelEnv,
             cloudApiKey: appState.cloudApiKey,
             cloudRegion: appState.cloudRegion,
+            spaceId: appState.spaceId,
             qDeploymentId: appState.qDeploymentId,
             qDeploymentIdHP: appState.qDeploymentIdHP,
             deploymentId: appState.deploymentId,
