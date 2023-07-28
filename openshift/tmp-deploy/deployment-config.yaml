@@ -4,17 +4,17 @@ metadata:
   annotations:
     app.openshift.io/route-disabled: 'false'
     openshift.io/generated-by: OpenShiftWebConsole
-  name: APP_NAME
-  namespace: APP_PROJECT
+  name: phone-md-q
+  namespace: phone-md-q
   labels:
-    app: APP_NAME
-    app.kubernetes.io/component: APP_NAME
-    app.kubernetes.io/instance: APP_NAME
-    app.kubernetes.io/name: APP_NAME
-    app.kubernetes.io/part-of: APP_NAME
+    app: phone-md-q
+    app.kubernetes.io/component: phone-md-q
+    app.kubernetes.io/instance: phone-md-q
+    app.kubernetes.io/name: phone-md-q
+    app.kubernetes.io/part-of: phone-md-q
     app.openshift.io/runtime: 3scale
-    app.openshift.io/runtime-namespace: APP_PROJECT
-    app.openshift.io/runtime-version: APP_NAME
+    app.openshift.io/runtime-namespace: phone-md-q
+    app.openshift.io/runtime-version: phone-md-q
 spec:
   strategy:
     type: Rolling
@@ -31,47 +31,47 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - APP_NAME
+          - phone-md-q
         from:
           kind: ImageStreamTag
-          name: 'APP_NAME:latest'
-          namespace: APP_PROJECT
+          name: 'phone-md-q:latest'
+          namespace: phone-md-q
     - type: ConfigChange
   replicas: 1
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: APP_NAME
-    deploymentconfig: APP_NAME
+    app: phone-md-q
+    deploymentconfig: phone-md-q
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: APP_NAME
-        deploymentconfig: APP_NAME
+        app: phone-md-q
+        deploymentconfig: phone-md-q
     spec:
       volumes:
-        - name: APP_NAME-config
+        - name: phone-md-q-config
           configMap:
-            name: APP_NAME-config
+            name: phone-md-q-config
             items:
-              - key: .env.local
+              - key: .env
                 path: .env.local
             defaultMode: 444
       containers:
-        - name: APP_NAME
+        - name: phone-md-q
           env:
             - name: _ENV_LOCAL
               valueFrom:
                 configMapKeyRef:
-                  name: APP_NAME-config
+                  name: phone-md-q-config
                   key: .env
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: {}
           volumeMounts:
-            - name: APP_NAME-config
+            - name: phone-md-q-config
               readOnly: true
               mountPath: /app/.env.local
               subPath: .env.local

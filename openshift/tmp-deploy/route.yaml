@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: phone-md-q-route
+  namespace: phone-md-q
+spec:
+  path: /
+  to:
+    kind: Service
+    name: phone-md-q-service
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

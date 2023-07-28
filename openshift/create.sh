@@ -29,7 +29,9 @@ then
 fi
 
 # Check if .env.local exists
-if [ ! -e "../.env.local"] then
+if [ ! -e ".env.local"] 
+then
+   echo ""
    echo -e "the .env.local file must exist with necessary parameters!"
    exit 1 # Exit script after printing help
 fi
