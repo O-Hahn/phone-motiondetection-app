@@ -36,6 +36,7 @@ export default async function handler(req, res) {
             // WML Setup - if source == "WML"
             const cloudApiKey = process.env.CLOUD_API_KEY || 'env var CLOUD_API_KEY not set';
             const cloudRegion = process.env.CLOUD_REGION || 'env var CLOUD_REGION not set';
+            const spaceId = process.env.WML_SPACE_ID || 'env var WML_SPACE_ID not set';
             const qDeploymentId = process.env.WML_Q_DEPLOYMENT_ID || 'env var WML_Q_DEPLOYMENT_ID not set';
             const qDeploymentIdHP = process.env.WML_Q_DEPLOYMENT_ID_HP || 'env var WML_Q_DEPLOYMENT_ID_HP not set';
             const deploymentId = process.env.WML_DEPLOYMENT_ID || 'env var WML_DEPLOYMENT_ID not set';
@@ -61,6 +62,7 @@ export default async function handler(req, res) {
                 modelEnv: modelEnv, 
                 cloudApiKey: cloudApiKey,
                 cloudRegion: cloudRegion,
+                spaceId: spaceId,
                 qDeploymentId: qDeploymentId,
                 qDeploymentIdHP: qDeploymentIdHP,
                 deploymentId: deploymentId,

@@ -58,7 +58,7 @@ async function sendScoreML(req, res) {
             if (data.modelEnv == "CLASSIC") {
                 url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.deploymentId + '/predictions?version=2021-01-02';
             } else {
-                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.qDploymentId + '/predictions?version=2021-01-02';
+                url = 'https://' + data.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + data.qDeploymentId + '/predictions?version=2021-01-02';
             }
         }    
 
