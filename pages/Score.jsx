@@ -248,7 +248,7 @@ const Score = () => {
                     if (stateObj.modelEnv == "CLASSIC") {
                         url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.deploymentId + '/predictions?version=2021-01-02';
                     } else {
-                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.qDploymentId + '/predictions?version=2021-01-02';
+                        url = 'https://' + stateObj.cloudRegion + '.ml.cloud.ibm.com/ml/v4/deployments/' + stateObj.qDeploymentId + '/predictions?version=2021-01-02';
                     }
                 }    
             } else {
